@@ -1,0 +1,12 @@
+* {
+	/* background: yellow; */
+}
+
+#title-manga-progress {
+    display: flex;
+    justify-content: space-between;
+}
+
+#btn-add-manga-progress {
+	cursor: pointer;
+}

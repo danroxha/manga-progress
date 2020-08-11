@@ -1,0 +1,19 @@
+{
+  "manifest_version": 2,
+  "name": "Manga Progress",
+  "version": "0.0.1",
+  "description": "Extension assists in the organization of previously read chapters",
+  "author": "Daniel Rocha",
+  "permissions": ["storage"],
+  "browser_action"	:{
+     "default_title": "Manga Progress",
+     "default_popup": "index.html"
+  },
+  "content_scripts": [
+  	{
+  		"matches": ["https://mangahost2.com/manga/*"],
+  		"css": [ "src/css/style.css" ],
+  		"js": ["src/main.js"]
+  	}
+  ] 
+}
