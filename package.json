@@ -1,0 +1,24 @@
+{
+  "name": "manga-progress",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "lite-server -c server-config.json",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dannRocha/manga-progress.git"
+  },
+  "keywords": [],
+  "author": "Daniel Rocha",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dannRocha/manga-progress/issues"
+  },
+  "homepage": "https://github.com/dannRocha/manga-progress#readme",
+  "devDependencies": {
+    "lite-server": ">=2.5.4"
+  }
+}

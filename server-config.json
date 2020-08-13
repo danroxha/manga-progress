@@ -1,0 +1,6 @@
+{
+  "port": 8000,
+  "files": ["./public/**/*.{html,htm,css,js}", "./src/**/*.{html,htm,css,js}"],
+  "startPath": "./public/index.html",
+  "server": { "baseDir": "./" }
+}
