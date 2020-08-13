@@ -8,5 +8,7 @@
 }
 
 #btn-add-manga-progress {
+	z-index: 9999;
 	cursor: pointer;
+	font-size: 30pt;
 }
