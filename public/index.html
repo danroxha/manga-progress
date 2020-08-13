@@ -1,0 +1,87 @@
+<html>
+  <head>
+     <link ref="stylesheet" href="assets/css/style.css" />
+     <style>
+         * {
+        
+        	margin: 0;
+        	padding: 0;
+        	box-sizing: border-box;
+        	--_1-color: #232323;
+        	--_2-color: #56e0ff;
+        	--_3-color: #ffffff;
+        	
+        }
+        
+        #title-manga-progress {
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        #btn-add-manga-progress {
+        	z-index: 9999;
+        	cursor: pointer;
+        	font-size: 30pt;
+        }
+        
+        #header-manga-progress {
+        	
+        }
+        .card {
+            position: relative;
+        	display: grid;
+	        min-width: 300px;
+	        border: 2px solid #000;
+            min-height: 80px;
+        }
+
+        .card header{
+        	background: green;
+        	display: grid;
+        	grid-template-columns: 20% 80%;
+        }
+        .card header img {
+        	border-radius: 50%;
+        	border: 1px solid #000;
+        	width: 100%;
+        	height: 100%;
+        	max-width: 80px
+        }
+        .card input[type="button"]{
+        	background: #FF0;
+        	position: absolute;
+        	right: 0;
+        	top: 30%;
+        	cursor: pointer;
+
+        }
+        .card-container {
+          display: grid;
+          justify-content: center;
+          width: 100%;
+          background: yellow;
+        }
+
+        .card-read {
+        	height: 100px;
+        	background: var(--_1-color);
+        	color: var(--_3-color);
+        }
+        .card-read header{
+
+        }
+        .card-read header img {
+        	width: 100%;
+        	max-width: 80px;
+        	max-height: 80px;
+        	border-radius: 50%;
+        	object-fit: cover;
+        }  
+     </style>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="../src/view.js"></script>
+  </body>
+</html>

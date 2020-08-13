@@ -1,5 +1,8 @@
 * {
 	/* background: yellow; */
+	margin: 0;
+	padding: 0;
+	
 }
 
 #title-manga-progress {
@@ -11,4 +14,12 @@
 	z-index: 9999;
 	cursor: pointer;
 	font-size: 30pt;
+}
+
+#header-manga-progress {
+	
+}
+
+.card-container {
+	display: flex;
 }
