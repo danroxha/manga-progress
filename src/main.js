@@ -3,15 +3,6 @@ const $  = document.querySelector.bind(document)
 const $$ = document.querySelectorAll.bind(document)
 
 
-// function isEmpty(obj) {
-    // for(var key in obj) {
-        // if(obj.hasOwnProperty(key))
-            // return false;
-    // }
-    // return true;
-// }
-
-
 function addStarToPage( manga )
 {
 
@@ -42,6 +33,7 @@ function getMangaData(){
     manga.set('page',  Number((location.hash.length) ? location.hash.replace('#', '') : 0))
     manga.set('chapters', Number($(".cap")?.id?.match(/\d+/)[0] ?? 0) )
     manga.set('current',  Number((location.pathname.match(/(\d+\/(\d+))/)?.length)? location.pathname.match(/(\d+\/(\d+))/)[2] : 0))
+	manga.set('cover', String(document.querySelector('.image-3')?.src ?? ''))
 
 	return manga
 
