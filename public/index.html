@@ -32,15 +32,55 @@
           /*align-items: center;*/
        }
 
-       #container{
-         width: 400px;        
-       }
+      #container{
+        width: 400px;    
+      }
+      #trash {
+        position: absolute;
+        margin: 0 auto;
+        width: 100%;
+        top: 20px;
+        fill: #FFF;
+      } 
+      #organize {
+        background-color: var(--_1-color);
+        width: 80px;
+        position: fixed;
+        top: 120px;
+        right: 10px;
+        z-index: 2;
 
+      }
+      
+      #organize div {
+        /* content: " "; */
+        height: 30px;
+        width: 30px;
+        background-color: var(--_1-color);
+        transform: rotate(45deg) translateY(-1px);
+        box-sizing: unset;
+        right: 7px;
+        position: fixed;
+        border-radius: 0 80%;
+      }
+      #organize label {
+        text-transform: uppercase; 
+        color: var(--_3_2-color);
+        font-style: italic;
+        font-size: 16pt;
+      }
+      #organize label:hover {
+        cursor: pointer;
+      }
   
       .header {
         width: 100%;
         /* min-width: 500px; */
-      }     
+      }    
+
+      .blur-trash {
+        filter: blur(5px);
+      }
 
       .normal-header, .read-header {
          background: var(--_3-color);
@@ -76,6 +116,8 @@
         justify-content: space-between;
         align-items: center;
         padding: 5px 0;
+        position: relative;
+
       }
 
       .normal-header nav > svg {
@@ -124,7 +166,7 @@
         background: var(--_3-color);
         font-style: italic;
         font-weight: bold;
-        transition: 300ms
+        transition: 300ms;
       }
       .read-header nav:hover {
         background: var(--_3_1-color);
@@ -135,44 +177,49 @@
       /*----------------------------CARDS----------------------------*/
 
 
-     .cards-container {
-       background: var(--_2_1-color);
-       overflow-y: auto;
-       max-height: 300px;
-
-     }
+      .cards-container {
+        background: var(--_2_1-color);
+        overflow-y: auto;
+        max-height: 300px;
+      }
      
-     .cards-container::-webkit-scrollbar {
-       width: 8px;
-     }
+      .cards-container::-webkit-scrollbar {
+        width: 8px;
+      }
      
-     .cards-container::-webkit-scrollbar-track {
-       background: var(--scroll-color-1);
-     }
+      .cards-container::-webkit-scrollbar-track {
+        background: var(--scroll-color-1);
+      }
 
-     .cards-container::-webkit-scrollbar-thumb {
-       background: var(--scroll-color-2);
-       border-radius: 50px;
-     }
+      .cards-container::-webkit-scrollbar-thumb {
+        background: var(--scroll-color-2);
+        border-radius: 50px;
+      }
      
-     .cards-blur {
-       opacity: 30%;
-       filter: blur(5px);
-     }
+      .cards-blur {
+        opacity: 30%;
+        filter: blur(5px);
+      }
 
-     .card {
-       display: flex;
-       justify-content: center;
-       text-align: center;
+      .card {
+        display: flex;
+        justify-content: center;
+        text-align: center;
        /*height: 81px;*/
-       height: 81px;
-       border: 2px solid #000;
-       margin: 10px;
-       flex-direction: column;
-     }
+        height: 81px;
+        border: 2px solid #000;
+        margin: 10px;
+        flex-direction: column;
+      }
+
+      [draggable="true"] {
+        /* cursor: cell; */
+        /* height: 100px; */
+      } 
+
      .card header {
         height: 100%;
-     	display: grid;
+     	  display: grid;
         grid-template-columns: auto 10%;
      }
      
@@ -188,8 +235,8 @@
      }
      
      .card header > span:hover {
-	   color: var(--_2-color);
-	   background: var(--_3-color);
+	    color: var(--_2-color);
+	    background: var(--_3-color);
      }
      .card h2 {
      	background: var(--_2-color);
@@ -202,16 +249,56 @@
      	line-height: 30px;
      }
 
-     .loading {
-     	width: 100%;
-     	height: 20px;
-     	background: #000;
+     .card:hover {
+       cursor: move;
+       transition: .3s;
      }
-     </style>
+     .card:hover div span{
+       opacity: 1;
+     }
+
+     .loading {
+     	  width: 100%;
+     	  height: 20px;
+     }
+     
+     .loading-bar{
+        position: relative;
+        width: 100%;
+        height: 20px;
+     	  background: #000;
+        /* border-radius: 15px; */
+        overflow: hidden;
+        /* border-bottom: 1px solid #ddd; */
+        /* box-shadow: inset 1px 2px rgba(0,0,0,.4), 0 -1px  1px #FFF, 0 1px 0 #FFF; */
+        z-index: 1;
+      
+      }
+
+    .percentage {
+        position: absolute;
+        top: 1px;
+        left: 1px;
+        right: 1px;
+        align-items: center;
+        height: 100%;
+        width: 50%;
+        background-color: var(--_3_2-color);
+        z-index: -1;
+      }
+      
+      .loading-bar span {
+        opacity: 1;
+        z-index: 0;
+        font-weight: bold;
+        color: var(--_1-color);
+      }
+
+    </style>
   </head>
   <body>
     <div id="app"></div>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-    <script src="../src/view.js"></script>
+    <script type="module" src="../src/view.js"></script>
   </body>
 </html>
