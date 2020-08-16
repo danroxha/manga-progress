@@ -25,23 +25,27 @@
 
          list-style: none;
        }
+    
        body {
           display: flex;
           background: #000;
           justify-content: center;
+          /* height: 100vh; */
           /*align-items: center;*/
        }
 
       #container{
-        width: 400px;    
+        width: 400px;
+        position: relative;    
       }
       #trash {
         position: absolute;
-        margin: 0 auto;
-        width: 100%;
+        max-width: 80px;
+        margin: 0 40%;
         top: 20px;
-        fill: #FFF;
-      } 
+        fill: #FFF;   
+      }
+      
       #organize {
         background-color: var(--_1-color);
         width: 80px;

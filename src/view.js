@@ -4,16 +4,31 @@ new Vue({
   el: '#app',
   template: `
     <main id='container'>
-      <header class='header' >
+    <header class='header' 
+    >
             <div 
               v-if="mode == 'normal'" 
               :class='
-                (removing)
+                (removing.status)
                   ? "normal-header blur-trash"
                   : "normal-header"
               '
-            >
-                <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 16 16" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M3.214 1.072C4.813.752 6.916.71 8.354 2.146A.5.5 0 018.5 2.5v11a.5.5 0 01-.854.354c-.843-.844-2.115-1.059-3.47-.92-1.344.14-2.66.617-3.452 1.013A.5.5 0 010 13.5v-11a.5.5 0 01.276-.447L.5 2.5l-.224-.447.002-.001.004-.002.013-.006a5.017 5.017 0 01.22-.103 12.958 12.958 0 012.7-.869zM1 2.82v9.908c.846-.343 1.944-.672 3.074-.788 1.143-.118 2.387-.023 3.426.56V2.718c-1.063-.929-2.631-.956-4.09-.664A11.958 11.958 0 001 2.82z" clip-rule="evenodd"></path><path fill-rule="evenodd" d="M12.786 1.072C11.188.752 9.084.71 7.646 2.146A.5.5 0 007.5 2.5v11a.5.5 0 00.854.354c.843-.844 2.115-1.059 3.47-.92 1.344.14 2.66.617 3.452 1.013A.5.5 0 0016 13.5v-11a.5.5 0 00-.276-.447L15.5 2.5l.224-.447-.002-.001-.004-.002-.013-.006-.047-.023a12.582 12.582 0 00-.799-.34 12.96 12.96 0 00-2.073-.609z" clip-rule="evenodd"></path>
+              >
+              <!-- Logo -->
+              <svg     
+                  stroke="currentColor"
+                  fill="currentColor" stroke-width="0" viewBox="0 0 16 16" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" d="M3.214 1.072C4.813.752 6.916.71 8.354 2.146A.5.5 0 
+                      018.5 2.5v11a.5.5 0 01-.854.354c-.843-.844-2.115-1.059-3.47-.92-1.344.14-2.66.617-3.452 
+                      1.013A.5.5 0 010 13.5v-11a.5.5 0 01.276-.447L.5 2.5l-.224-.447.002-.001.004-.002.013-.006a5.017 
+                      5.017 0 01.22-.103 12.958 12.958 0 012.7-.869zM1 2.82v9.908c.846-.343 1.944-.672 3.074-.788 
+                      1.143-.118 2.387-.023 3.426.56V2.718c-1.063-.929-2.631-.956-4.09-.664A11.958 11.958 0 001 
+                      2.82z" clip-rule="evenodd"></path><path fill-rule="evenodd" d="M12.786 1.072C11.188.752 
+                      9.084.71 7.646 2.146A.5.5 0 007.5 2.5v11a.5.5 0 00.854.354c.843-.844 2.115-1.059 3.47-.92 
+                      1.344.14 2.66.617 3.452 1.013A.5.5 0 0016 13.5v-11a.5.5 0 00-.276-.447L15.5 
+                      2.5l.224-.447-.002-.001-.004-.002-.013-.006-.047-.023a12.582 12.582 0 00-.799-.34 12.96 
+                      12.96 0 00-2.073-.609z" clip-rule="evenodd">
+                    </path>
                 </svg>
                 <section>
                   <h1>Mangá <br/>Progress</h1>
@@ -48,17 +63,18 @@ new Vue({
                   </svg>
                   <form 
                     id="organize"
-                    v-show="organizeBox"
+                    v-show="organizeBox.visible"
                   >
                     <div></div>
                     <label 
-                      v-for='value in organizeValues'
+                      v-for='option in organizeBox.options'
                       >
-                        <input 
-                          @click="setOrganizeCards"
-                          type="radio" name="organize" value={{button}} 
+                        <input
+                          :checked="(organizeBox.select == 'a-z')? 'checked' : 'none'" 
+                          @change="setOrganizeCards"
+                          type="radio" name="organize" :value=option 
                         />
-                        {{ value }}
+                        {{ option }}
                         <br/>
                     </label>
         
@@ -75,7 +91,7 @@ new Vue({
             <div 
               v-else 
               :class='
-                (removing)
+                (removing.status)
                   ? "read-header blur-trash"
                   : "read-header"
               '
@@ -102,8 +118,14 @@ new Vue({
               </nav>
             </div>
             <svg 
-              id='trash'
-                v-show="removing"
+                id='trash'
+                v-show="removing.status"    
+                
+                @dragleave='dragleave'
+                @dragover.prevent='dragover'
+                @drop="drop"
+
+
                   stroke="currentColor" 
                   fill="currentColor" 
                   stroke-width="0" 
@@ -119,14 +141,18 @@ new Vue({
             </svg>
       </header>
       <section 
-        :class='(mode == "read" || removing)? "cards-container cards-blur":"cards-container"' 
+        :class='(mode == "read" || removing.status)? "cards-container cards-blur":"cards-container"' 
       >
         <ul>
           <li 
             draggable 
             class='card' v-for='manga in mangas'
+            
             @dragstart='dragstart'
             @dragend='dragend'
+
+            :key="manga.id"
+            :id="manga.id"
           >
             <header>
               <h2>{{ manga?.title }}</h2>
@@ -151,10 +177,19 @@ new Vue({
   data: {
     mode: 'normal',
     mangas: [],
+    rawMangas: null,
     currentManga: {},
-    removing: false,
-    organizeBox: false,
-    organizeValues: ['a-z', 'z-a'],
+    removing: {
+      over: false,
+      status: false,
+      component: null,
+    },
+   
+    organizeBox: {
+      visible: false,
+      options: ['a-z', 'z-a'],
+      select: 'a-z'
+    }
   },
   methods: {
   	changeMode(){
@@ -171,20 +206,84 @@ new Vue({
       }
     },
 
-    setOrganizeCards(){
-      this.organizeBox = !this.organizeBox
+    loadFavorites(){
+      
+      chrome.storage.sync.get(['favorites'], ( { favorites : mangas } ) => {
+
+        this.rawMangas = mangas
+        this.mangas = []
+
+        for(let key in mangas){
+          this.mangas.push(mangas[key])
+        }
+        
+  
+        chrome.storage.sync.get(['currentManga'], ({ currentManga }) => {
+        
+          this.currentManga = mangas[currentManga?.id]
+        
+        })
+
+      })
     },
-    
-    dragstart(event){
-      this.removing = !this.removing
+
+    setOrganizeCards(event){
+      this.organizeBox.visible = !this.organizeBox.visible
+      if(event.type === 'change'){
+
+        this.organize(event.target.defaultValue)
+        console.log(event.target.defaultValue)
+      }
+
+    },
+
+    dragstart({target}){
+      this.removing.status = !this.removing.status
+      this.removing.component = target
     },
 
     dragend(event){
-      this.removing = !this.removing 
+      this.removing.status = !this.removing.status
     },
-    dragover(event){
-      console.log(event)
-    }
+    
+    drop(){
+
+      if( !this.removing.over )
+        return
+
+      delete this.rawMangas[this.removing.component.id]
+
+      chrome.storage.sync.set({'favorites': this.rawMangas }, null)
+      
+      this.loadFavorites()
+    
+    },
+
+    dragover(){ this.removing.over = true },
+    dragleave(){ this.removing.over = false },
+    
+    organize(order){
+
+      const _sort =  (list) =>
+      {
+        return list.sort(function (a, b) {
+          
+          if (a.title > b.title) return 1
+          if (a.title < b.title) return -1
+          
+          return 0;
+        });
+      }
+
+      switch(order){
+        case 'a-z':
+          _sort(this.mangas)
+          break
+        case 'z-a':
+          _sort(this.mangas).reverse()
+          break
+      }
+    },
   },
 
   computed: {
@@ -192,21 +291,7 @@ new Vue({
   },
   
   mounted(){
-    
-
-    chrome.storage.sync.get(['favorites'], ( { favorites : mangas } ) => {
-      
-      for(let key in mangas){
-        this.mangas.push(mangas[key])
-      }
-      
-
-      chrome.storage.sync.get(['currentManga'], ({ currentManga }) => {
-      
-        this.currentManga = mangas[currentManga?.id]
-      
-      })
-     
-    })
+    this.loadFavorites()
+    this.organize(this.mangas)
   }
 })
