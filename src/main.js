@@ -26,15 +26,27 @@ function getMangaData(){
 
   try {
 
+	// MANGAHOSTED.COM/MANGA or MANGAHOST2.COM/MANGA
+	
     manga.title = String($$('.title')[0]?.textContent ?? $('.html-embed-3')?.children[0]?.children[0]?.textContent?.match(/(\w+.*[-])/)[0]?.slice(0, -2)) 
-	  manga.cover = String(document.querySelector('.image-3')?.src ?? null) 
+    manga.cover = String(document.querySelector('.image-3')?.src ?? null) 
     manga.address = String(location.href.match(/http?s:\/\/\w*.\w+\/\w+\/\w+?.+[^(\/\d+.\d+)#]/)[0])
-	  manga.id = Number(location.pathname.match(/mh(\d+)/)[1])
+    manga.id = Number(location.pathname.match(/mh(\d+)/)[1])
     manga.page = Number((location.hash.length) ? location.hash.replace('#', '') : 1)
     manga.chapters = Number($(".cap")?.id?.match(/\d+/)[0] ?? 0) 
     manga.current = Number((location.pathname.match(/(\d+\/(\d+))/)?.length)? location.pathname.match(/(\d+\/(\d+))/)[2] : 0)
     manga.progress = 0
     manga.status = String($('.btn-caps')?.textContent ?? null )
+
+
+	// CENTRALDEMANGAS.ONLINE/TITULOS/
+	
+	// manga.title = String($('h1')?.textContent ?? $$('.ui.breadcrumb > a')[2].textContent )
+	// manga.chapters = Number(document.querySelectorAll('.active tr a')[0].textContent)
+	// manga.current = String(location.pathname.match(/(\/manga\/\w+.+\/(\d+.\d+))/)[2]) -> capitulo atualmente lendo
+	// manga.paga =  Number((location.hash.length) ? location.hash.replace('#', '') : 1)
+	// manga.cover = String( document.querySelector('.ui.relaxed.list div img').src ?? null )
+	
     
 	return manga
 
@@ -98,6 +110,10 @@ async function main(){
         
         if( !favorite.current || favorite.current < manga.current){
           favorite.current = manga.current
+        }
+
+        if(manga?.id === favorite?.id){
+          favorite.address = manga.address
         }
 
         if(manga?.cover !== 'null'){
