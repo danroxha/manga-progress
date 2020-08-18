@@ -1,4 +1,4 @@
-import Objects from './lib/utils/Objects.js'
+// import Objects from './lib/utils/Objects.js'
 
 new Vue({
   el: '#app',
@@ -55,10 +55,10 @@ new Vue({
                     @click="setOrganizeCards"
                   
                     stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
-                    <rect x="0.46" y="3.06" width="23.08" height="2.18"></rect>
-                    <rect x="0.46" y="8.29" width="23.08" height="2.18"></rect>
-                    <rect x="0.46" y="13.53" width="23.08" height="2.18"></rect>
-                    <rect x="0.46" y="18.76" width="15.81" height="2.18">
+                      <rect x="0.46" y="3.06" width="23.08" height="2.18"></rect>
+                      <rect x="0.46" y="8.29" width="23.08" height="2.18"></rect>
+                      <rect x="0.46" y="13.53" width="23.08" height="2.18"></rect>
+                      <rect x="0.46" y="18.76" width="15.81" height="2.18">
                     </rect>
                   </svg>
                   <form 
@@ -70,7 +70,7 @@ new Vue({
                       v-for='option in organizeBox.options'
                       >
                         <input
-                          :checked="(organizeBox.select == 'a-z')? 'checked' : 'none'" 
+                          :checked='!!(organizeBox.select == option)'
                           @change="setOrganizeCards"
                           type="radio" name="organize" :value=option 
                         />
@@ -144,32 +144,46 @@ new Vue({
         :class='(mode == "read" || removing.status)? "cards-container cards-blur":"cards-container"' 
       >
         <ul>
-          <li 
+          <li
+
             draggable 
             class='card' v-for='manga in mangas'
             
             @dragstart='dragstart'
             @dragend='dragend'
-
+            @mousemove='enableCardInformation($event, manga)'
+            @mouseout='disableCardInformation'
+            @click.prevent='redirectPage($event, manga.address)'
             :key="manga.id"
             :id="manga.id"
           >
             <header>
               <h2>{{ manga?.title }}</h2>
-              <span> Go </span>
+              <span
+                @click.prevent='redirectCurrentChapter($event, manga)'
+              > Go </span>
             </header>
-            <!-- <div class='loading'>
-               <div class='bar'></div>
-            </div>
-            -->
-
+          
             <div class='loading-bar'>
-              <div class='percentage' :style="{'width': manga?.concluded + '%'}">
+              <div class='percentage' :style="{'width': manga.progress + '%'}">
               </div>
-              <span>Complete 30%</span>
+              <span>
+                {{ messageBar(manga) }}
+              </span>
             </div>
           </li>
         </ul>
+        <dl
+          v-show='!!cardInformation.enable'
+          id="card-float" :style='{top:cardInformation.y+"px", left:cardInformation.x+"px"}'
+        >
+            <dt>Chapters</dt>
+            <dd>{{cardInformation.data?.chapters ?? 9999}}</dd>
+            <dt>Current</dt>
+            <dd>{{cardInformation.data?.current ?? 9999}}</dd>
+            <dt>Status</dt>
+            <dd>{{cardInformation.data?.status}}</dd>
+        </dl>
       </section>
     </main>
   `,
@@ -189,52 +203,99 @@ new Vue({
       visible: false,
       options: ['a-z', 'z-a'],
       select: 'a-z'
+    },
+
+    cardInformation: {
+      x: 0, y: 0, data: null,
+      enable: false,
     }
   },
   methods: {
+
   	changeMode(){
   		this.mode = (this.mode === 'read') ? 'normal' : 'read'
   	},
 
-  	redirectPage(href){
-       //window.open(href)
+  	redirectPage(_, href){
+      // alert(href)
+      window.open(href)
+    },
+    
+    redirectCurrentChapter(_, manga){
+      
+      if(!manga.current)
+        manga.current++
+
+      window.open(`${manga.address}/${manga.current}#${manga.page}`)
     },
     
     processProgress() {
-      for( let manga in this.mangas ){
-        // manga
+      for( let manga of this.mangas ){
+        manga.progress = manga.current * 100 / manga.chapters
+        manga.progress = Number(manga.progress.toFixed(2))
+        this.rawMangas[manga.id] = manga
       }
+      
     },
 
     loadFavorites(){
-      
-      chrome.storage.sync.get(['favorites'], ( { favorites : mangas } ) => {
+      return new Promise((resolve, reject) => {
+        chrome.storage.sync.get(['favorites'], ( { favorites : mangas } ) => {
 
-        this.rawMangas = mangas
-        this.mangas = []
+          let __mangas = []
+          let __raw = mangas
 
-        for(let key in mangas){
-          this.mangas.push(mangas[key])
-        }
-        
-  
-        chrome.storage.sync.get(['currentManga'], ({ currentManga }) => {
-        
-          this.currentManga = mangas[currentManga?.id]
-        
+          for(let key in mangas){
+            __mangas.push(mangas[key])
+          }
+          
+    
+          chrome.storage.sync.get(['currentManga'], ({ currentManga }) => {
+          
+            this.currentManga = mangas[currentManga?.id]
+            resolve({favorites: __mangas, raw: __raw })
+
+          })
         })
-
       })
+    },
+
+    updateFavorites(){
+      return new Promise((resolve, reject) => {
+        chrome.storage.sync.set({'favorites': this.rawMangas }, null)
+        resolve({status:  true })
+      })
+    },
+
+    async syncStorage(){
+      const { favorites, raw } = await this.loadFavorites()
+      this.mangas = favorites
+      this.rawMangas = raw
     },
 
     setOrganizeCards(event){
       this.organizeBox.visible = !this.organizeBox.visible
       if(event.type === 'change'){
-
-        this.organize(event.target.defaultValue)
-        console.log(event.target.defaultValue)
+        this.organizeBox.select = event.target.defaultValue
+        this.organizeList()
       }
 
+    },
+
+    enableCardInformation(event, data){
+      
+      if(this.mode === 'read' )
+        return
+
+      this.cardInformation.enable = true
+      this.cardInformation.data = data
+      this.cardInformation.x = event.x + 10
+      this.cardInformation.y = event.y + 10
+    
+    },
+
+    disableCardInformation(){
+      this.cardInformation.enable = false
     },
 
     dragstart({target}){
@@ -242,27 +303,26 @@ new Vue({
       this.removing.component = target
     },
 
-    dragend(event){
+    dragend(){
       this.removing.status = !this.removing.status
     },
     
-    drop(){
+    async drop(){
 
       if( !this.removing.over )
         return
 
       delete this.rawMangas[this.removing.component.id]
 
-      chrome.storage.sync.set({'favorites': this.rawMangas }, null)
-      
-      this.loadFavorites()
+      await this.updateFavorites()
+      await this.syncStorage()
     
     },
 
     dragover(){ this.removing.over = true },
     dragleave(){ this.removing.over = false },
     
-    organize(order){
+    organizeList(){
 
       const _sort =  (list) =>
       {
@@ -275,7 +335,7 @@ new Vue({
         });
       }
 
-      switch(order){
+      switch(this.organizeBox.select){
         case 'a-z':
           _sort(this.mangas)
           break
@@ -284,14 +344,30 @@ new Vue({
           break
       }
     },
-  },
 
-  computed: {
-  	
+    messageBar(manga){
+      let message = ''
+
+      if(manga.status === 'Ativo' && manga.progress === 100.0)
+        message = `Check new chapters`
+      else if(!manga.chapters)
+        message = `Click here for update`
+      else
+        message = `Complete ${manga.progress}%`
+
+      return message
+    },
   },
   
-  mounted(){
-    this.loadFavorites()
-    this.organize(this.mangas)
+  computed: {
+ 
+  },
+  
+  async mounted(){
+    
+    await this.syncStorage()
+    this.organizeList()
+    this.processProgress()
+    console.log(this.mangas)
   }
 })
