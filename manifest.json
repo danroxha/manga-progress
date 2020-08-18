@@ -16,6 +16,7 @@
   "content_scripts": [
   	{
   		"matches": ["https://mangahost2.com/manga/*"],
+  		"matches": ["https://mangahosted.com/manga/*"],
   		"css": [ "src/css/style.css" ],
   		"js": ["src/main.js"]
   	}
