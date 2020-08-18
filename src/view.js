@@ -299,6 +299,7 @@ new Vue({
     },
 
     dragstart({target}){
+      this.disableCardInformation()
       this.removing.status = !this.removing.status
       this.removing.component = target
     },
