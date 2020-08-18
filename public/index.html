@@ -53,6 +53,7 @@
         top: 120px;
         right: 10px;
         z-index: 2;
+        padding-left: 5px;
 
       }
       
@@ -75,6 +76,26 @@
       }
       #organize label:hover {
         cursor: pointer;
+      }
+
+      #card-float{
+        display: grid;
+        grid-template-columns: auto auto;
+        grid-template-rows: auto auto;
+        position: fixed;
+        height: 60px;
+        width: 100%;
+        max-width: 160px;
+        z-index: 9999;
+        background-color: var(--_1-color);
+        font-style: italic;
+        font-size: 12pt;
+        top: 0;
+        padding: 0 10px;
+      }
+      #card-float dd {
+        text-align: right;
+        font-weight: bold;
       }
   
       .header {
@@ -216,11 +237,6 @@
         flex-direction: column;
       }
 
-      [draggable="true"] {
-        /* cursor: cell; */
-        /* height: 100px; */
-      } 
-
      .card header {
         height: 100%;
      	  display: grid;
@@ -295,6 +311,7 @@
         opacity: 1;
         z-index: 0;
         font-weight: bold;
+        font-size: 10pt;
         color: var(--_1-color);
       }
 
