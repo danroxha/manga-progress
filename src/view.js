@@ -256,7 +256,7 @@ new Vue({
     
           chrome.storage.sync.get(['currentManga'], ({ currentManga }) => {
           
-            this.currentManga = mangas[currentManga?.id]
+            //this.currentManga = mangas[currentManga?.id]
             resolve({favorites: __mangas, raw: __raw })
 
           })
