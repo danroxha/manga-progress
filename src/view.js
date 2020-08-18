@@ -117,8 +117,11 @@ new Vue({
                 </p>
               </nav>
             </div>
+
+            <!-- Trash -->
             <svg 
                 id='trash'
+                :class='(removing.over)? "fill-red" : "fill-white"'
                 v-show="removing.status"    
                 
                 @dragleave='dragleave'
@@ -147,7 +150,8 @@ new Vue({
           <li
 
             draggable 
-            class='card' v-for='manga in mangas'
+            class='card' 
+            v-for='manga in mangas'
             
             @dragstart='dragstart'
             @dragend='dragend'
@@ -284,13 +288,15 @@ new Vue({
 
     enableCardInformation(event, data){
       
+      const margin = 10
+      
       if(this.mode === 'read' )
         return
 
       this.cardInformation.enable = true
       this.cardInformation.data = data
-      this.cardInformation.x = event.x + 10
-      this.cardInformation.y = event.y + 10
+      this.cardInformation.x = event.x + margin
+      this.cardInformation.y = event.y + margin
     
     },
 
@@ -298,10 +304,11 @@ new Vue({
       this.cardInformation.enable = false
     },
 
-    dragstart({target}){
+    dragstart(event){
       this.disableCardInformation()
       this.removing.status = !this.removing.status
-      this.removing.component = target
+      this.removing.component = event.target
+    
     },
 
     dragend(){
@@ -369,6 +376,5 @@ new Vue({
     await this.syncStorage()
     this.organizeList()
     this.processProgress()
-    console.log(this.mangas)
   }
 })

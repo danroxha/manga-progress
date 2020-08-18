@@ -14,6 +14,9 @@
          --_3_1-color: #56fffc;
          --_3_2-color: #0d6966;
 
+         --_4-color: #FF0000;
+         --_4_1-color: #a00000;
+
          --scroll-color-1: #000;
          --scroll-color-2: #FFF;
          --scroll-color-3: #00F;
@@ -43,8 +46,12 @@
         max-width: 80px;
         margin: 0 40%;
         top: 20px;
-        fill: #FFF;   
+        transition: 300ms;
       }
+
+  
+      .fill-red{ fill: var(--_4_1-color);}
+      .fill-white{fill:var(--_1-color);}
       
       #organize {
         background-color: var(--_1-color);
@@ -97,7 +104,7 @@
         text-align: right;
         font-weight: bold;
       }
-  
+      
       .header {
         width: 100%;
         /* min-width: 500px; */
