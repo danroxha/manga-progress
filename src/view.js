@@ -207,8 +207,22 @@ new Vue({
                 </span>
               </div>
             </section>
-            <section v-else >
-               <img  draggable='false' :src='manga.cover' />
+            <section
+              class='grid-box'
+              v-else 
+            >
+              <figure>
+                <img draggable='false' :src='manga.cover' />
+                <p>{{manga.progress + "%" }}</p>
+              </figure>
+              <svg>
+					      <circle cx='46' cy='52' r='45'></circle>
+                <circle 
+                  cx='46' cy='52' r='45'
+                  :style="{ 'stroke-dashoffset': 440 - (280 * manga.progress) / 100}"
+                >
+                </circle>
+				      </svg>
             </section>
           </li>
         </ul>

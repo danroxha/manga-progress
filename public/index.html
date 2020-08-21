@@ -91,7 +91,7 @@
       text-align: right;
       font-weight: bold;
     }
-    
+
     .header {
       width: 100%;
       /* min-width: 500px; */
@@ -285,6 +285,7 @@
     }
 
     .grid {
+      position: relative;
       display: grid;
       grid-template-columns: auto auto auto;
 
@@ -292,6 +293,85 @@
 
     .grid section {
       height: 130px;
+    }
+
+    .grid section:hover img {
+      display: block;
+      filter: blur(5px);
+    }
+
+    .grid section:hover svg {
+      visibility: visible;
+    }
+
+    .grid section:hover p {
+      visibility: visible;
+    }
+
+    .grid section img {
+      width: 100px;
+      object-fit: cover;
+      height: 130px;
+      
+    }
+    .grid section svg {
+      visibility: hidden;
+      position: absolute;
+      width: 100px;
+      height: 110px;
+    }
+
+    .grid section circle {
+      fill: none;
+      stroke-width: 10;
+			stroke: #000;
+			transform: translate(5px, 5px);
+			stroke-dasharray: 440;
+			stroke-dashoffset: 440;
+      stroke-linecap: round;
+    }
+    .grid section svg circle:nth-child(1){
+			stroke-dashoffset: 0;
+			stroke: var(--_1-color);
+		}
+
+    .grid section svg circle:nth-child(1){
+			stroke-dashoffset: 0;
+			stroke: var(--_1-color);
+		}
+			
+		.grid section svg circle:nth-child(2){
+			stroke: var(--_3_2-color);
+		}
+  
+    .grid section figure {
+      position: relative;
+    } 
+    
+     .grid section figure p {
+      visibility: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: absolute;
+      font-weight: bold;
+      font-size: 15pt;
+      top: 0;
+      left: 0;
+      text-align: center;
+      /* background-color: green; */
+      width: 100%;
+      height: 100%;
+      color: var(--_3_2-color);
+    } 
+    
+    .grid-box {
+      display: flex;
+      min-height: 100%;
+    }
+    
+    .grid-box img {
+      width: 100%;
     }
 
     .loading {
