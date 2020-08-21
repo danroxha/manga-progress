@@ -52,38 +52,22 @@
   
       .fill-red{ fill: var(--_4_1-color);}
       .fill-white{fill:var(--_1-color);}
-      
-      #organize {
-        background-color: var(--_1-color);
-        width: 80px;
+      #display-setting, #display-setting-submenu {
+        background: #FFF;
         position: fixed;
-        top: 120px;
-        right: 10px;
-        z-index: 2;
-        padding-left: 5px;
-
+        padding: 0 10px;
+        top: 0;
+        left: 0;
+        display: flex;
+        flex-direction: column;
+        font-size: 14pt;
       }
-      
-      #organize div {
-        /* content: " "; */
-        height: 30px;
-        width: 30px;
-        background-color: var(--_1-color);
-        transform: rotate(45deg) translateY(-1px);
-        box-sizing: unset;
-        right: 7px;
-        position: fixed;
-        border-radius: 0 80%;
+      #display-setting-submenu {
+        box-sizing: content-box;
+        background: red;  
+        left: 115px;
       }
-      #organize label {
-        text-transform: uppercase; 
-        color: var(--_3_2-color);
-        font-style: italic;
-        font-size: 16pt;
-      }
-      #organize label:hover {
-        cursor: pointer;
-      }
+    
 
       #card-float{
         display: grid;
@@ -233,7 +217,7 @@
         filter: blur(5px);
       }
 
-      .card {
+      .card section{
         display: flex;
         justify-content: center;
         text-align: center;
@@ -244,13 +228,13 @@
         flex-direction: column;
       }
 
-     .card header {
+     .card section header {
         height: 100%;
      	  display: grid;
         grid-template-columns: auto 10%;
      }
      
-     .card header > span {
+     .card section header > span {
      	display: flex;
      	justify-content: center;
      	align-items: center;
@@ -261,7 +245,7 @@
      	transition: 250ms;
      }
      
-     .card header > span:hover {
+     .card section header > span:hover {
 	    color: var(--_2-color);
 	    background: var(--_3-color);
      }
@@ -282,6 +266,11 @@
      }
      .card:hover div span{
        opacity: 1;
+     }
+     .grid {
+       
+       display: grid;
+       grid-template-columns: auto auto auto;
      }
 
      .loading {

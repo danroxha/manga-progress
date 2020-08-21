@@ -34,7 +34,6 @@ new Vue({
                   <h1>Mangá <br/>Progress</h1>
                 </section>
                 <nav>
-
                   <!-- Gear SVG -->
                   <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 16 16" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
                     <path fill-rule="evenodd" d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 
@@ -52,8 +51,6 @@ new Vue({
                  <!-- List SVG -->
                   <svg
 
-                    @click="setOrganizeCards"
-                  
                     stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
                       <rect x="0.46" y="3.06" width="23.08" height="2.18"></rect>
                       <rect x="0.46" y="8.29" width="23.08" height="2.18"></rect>
@@ -61,31 +58,62 @@ new Vue({
                       <rect x="0.46" y="18.76" width="15.81" height="2.18">
                     </rect>
                   </svg>
+                  
                   <form 
-                    id="organize"
-                    v-show="organizeBox.visible"
+                    id="display-setting"
+                    v-show="displaySetting.visible"
                   >
-                    <div></div>
-                    <label 
-                      v-for='option in organizeBox.options'
+                    <label
+                      v-for='(option, key) in displaySetting.ordination.options'
+                    >
+                      <input
+                        :checked='!!(displaySetting.ordination.enable == key)'
+                        type="radio" name="ordination"
+                        @change='setSettingDisplay($event, key)'
+                      />
+                      {{ key }}
+                    </label>
+                    
+                    <hr/>
+
+                    <label
+                      v-for='(option, key) in displaySetting.modes.options'
+                    >
+                      <input
+                        :checked='!!(displaySetting.modes.select == option)'
+                        type="radio" name="view" :value=option 
+                      />
+                      {{option}}
+                    </label>
+
+                    </form>
+                    <div id='display-setting-submenu'>
+                      <label
+                        v-for='(value, key) in displaySetting.ordination.options[displaySetting.ordination.enable]'
                       >
                         <input
-                          :checked='!!(organizeBox.select == option)'
-                          @change="setOrganizeCards"
-                          type="radio" name="organize" :value=option 
+                          @change='setSettingDisplay($event, key)'  
+                          type="radio" name="ordination-option"
+                          :checked='
+                            (
+                              displaySetting.ordination.options[
+                                displaySetting.ordination.enable
+                              ][displaySetting.ordination.select[displaySetting.ordination.enable]] == value
+                            )
+                          '
                         />
-                        {{ option }}
-                        <br/>
-                    </label>
-        
-                    <!-- 
-                    <label>
-                      <input type="radio" name="organize" value="z-a" />
-                      Z-A
-                    </label>
-                    -->
-                    
-                </form>
+                        <!--
+
+                          {{ 
+                            value[displaySetting.ordination.select[displaySetting.ordination.enable]]
+                          }}
+                        -->
+
+                        {{
+                          value
+                        }}
+                      </label>  
+                    </div>
                 </nav>
             </div>
             <div 
@@ -146,7 +174,9 @@ new Vue({
       <section 
         :class='(mode == "read" || removing.status)? "cards-container cards-blur":"cards-container"' 
       >
-        <ul>
+        <ul
+          :class='(displaySetting.modes.select == "list")? "list":  "grid" '
+        >
           <li
 
             draggable 
@@ -161,26 +191,38 @@ new Vue({
             :key="manga.id"
             :id="manga.id"
           >
-            <header>
-              <h2>{{ manga?.title }}</h2>
-              <span
-                @click.prevent='redirectCurrentChapter($event, manga)'
-              > Go </span>
-            </header>
-          
-            <div class='loading-bar'>
-              <div class='percentage' :style="{'width': manga.progress + '%'}">
+            <section
+              v-if='displaySetting.modes.select == "list"'
+            >
+              <header>
+                <h2>{{ manga?.title }}</h2>
+                <span
+                  @click.prevent='redirectCurrentChapter($event, manga)'
+                > Go </span>
+              </header>
+            
+              <div class='loading-bar'>
+                <div class='percentage' :style="{'width': manga.progress + '%'}">
+                </div>
+                <span>
+                  {{ messageBar(manga) }}
+                </span>
               </div>
-              <span>
-                {{ messageBar(manga) }}
-              </span>
-            </div>
+            </section>
+            <section 
+              v-else
+            >
+               <img :src='manga.cover' />
+            </section>
           </li>
         </ul>
         <dl
           v-show='!!cardInformation.enable'
-          id="card-float" :style='{top:cardInformation.y+"px", left:cardInformation.x+"px"}'
+          id="card-float" 
+          :style='{top:cardInformation.y+"px", left:cardInformation.x+"px", height: (displaySetting.modes.select == "list")? "60px": "70px"}'
         >
+            <dt v-if='displaySetting.modes.select == "grid"'>Title</dt>
+            <dd v-if='displaySetting.modes.select == "grid"'>{{cardInformation.data?.title}}</dd>
             <dt>Chapters</dt>
             <dd>{{cardInformation.data?.chapters ?? 9999}}</dd>
             <dt>Current</dt>
@@ -202,12 +244,22 @@ new Vue({
       status: false,
       component: null,
     },
-   
-    organizeBox: {
-      visible: false,
-      options: ['a-z', 'z-a'],
-      select: 'a-z'
-    },
+
+    displaySetting: {
+      visible: true,
+      ordination: {
+        select: {alphabet: 0, progress: 0},
+        enable: 'alphabet',
+        options: {
+          alphabet: ['order', 'reverse'],
+          progress: ['more progress', 'less progress']
+        },
+      },
+      modes: {
+        select: 'grid',
+        options: ['list', 'grid'],
+      }
+    },  
 
     cardInformation: {
       x: 0, y: 0, data: null,
@@ -221,7 +273,6 @@ new Vue({
   	},
 
   	redirectPage(_, href){
-      // alert(href)
       window.open(href)
     },
     
@@ -277,13 +328,16 @@ new Vue({
       this.rawMangas = raw
     },
 
-    setOrganizeCards(event){
-      this.organizeBox.visible = !this.organizeBox.visible
-      if(event.type === 'change'){
-        this.organizeBox.select = event.target.defaultValue
-        this.organizeList()
+    setSettingDisplay(event, key){
+      
+      if(this.displaySetting.ordination.select[key] !== undefined){
+        this.displaySetting.ordination.enable = key
+      }
+      else {
+        this.displaySetting.ordination.select[this.displaySetting.ordination.enable] = key
       }
 
+      this.organizeList()
     },
 
     enableCardInformation(event, data){
@@ -331,26 +385,43 @@ new Vue({
     dragleave(){ this.removing.over = false },
     
     organizeList(){
+      switch(this.displaySetting.ordination.enable){
+        case 'alphabet':
+          if(!this.displaySetting.ordination.select[this.displaySetting.ordination.enable])
+            this.mangas = _sort(this.mangas, 'title')
+          else 
+            this.mangas = _sort(this.mangas, 'title').reverse()
 
-      const _sort =  (list) =>
+          break
+        case 'progress':
+          if(!this.displaySetting.ordination.select[this.displaySetting.ordination.enable])
+            this.mangas = _sort(this.mangas, 'progress').reverse()
+          else
+            this.mangas = _sort(this.mangas, 'progress')
+      
+          break
+      }
+
+    
+      function _sort(list, key)
       {
         return list.sort(function (a, b) {
           
-          if (a.title > b.title) return 1
-          if (a.title < b.title) return -1
+          if (a[key] > b[key]) return 1
+          if (a[key] < b[key]) return -1
           
           return 0;
         });
       }
 
-      switch(this.organizeBox.select){
-        case 'a-z':
-          _sort(this.mangas)
-          break
-        case 'z-a':
-          _sort(this.mangas).reverse()
-          break
-      }
+      // switch(this.displaySetting.ordination.select){
+      //   case 'a-z':
+      //     _sort(this.mangas)
+      //     break
+      //   case 'z-a':
+      //     _sort(this.mangas).reverse()
+      //     break
+      // }
     },
 
     messageBar(manga){
@@ -374,7 +445,9 @@ new Vue({
   async mounted(){
     
     await this.syncStorage()
-    this.organizeList()
     this.processProgress()
+    this.organizeList()
+
+    console.log(this.mangas)
   }
 })
