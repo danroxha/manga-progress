@@ -29,13 +29,18 @@ git clone git@github.com:dannRocha/manga-progress.git
 * Arraste a pasta do repositório para a janela das extensões;
 
 ## &#x1F5A5;&#xFE0F; Como usar
+
 Nos sites que possuem suporte a extensão, basta acessar a página de cada mangá que deseja acompanhar e clicar na estrela 	(:star:), para que seja adicionado aos seus favoritos.
 
 <p align="center">
 	<img src="screenshot/site.png"/>
 </p>
+
 ## &#x1F477;&#x1F3FE;&#x200D;&#x2642;&#xFE0F; Suporte
- * **[Mangá Host](https://mangahosted.com/)**
- * ~~**[Central de Mangás](http://centraldemangas.online/)**~~
- * ~~**[Union Mangá](https://unionmanga.xyz/)**~~
+
+<ul>
+	<i><strong><a href="https://mangahosted.com/"><li>Mangá Host</li></a></strong></i>
+	<i><strong><strike><a href="http://centraldemangas.online/"><li>Central de Mangás</li></a></strike></strong></i>
+	<i><strong><strike><a href="https://unionmanga.xyz/"><li>Union Mangá</li></a></strike></strong></i>
+</ul>
 
