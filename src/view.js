@@ -3,9 +3,10 @@
 new Vue({
   el: '#app',
   template: `
-    <main id='container'>
-    <header class='header' 
+    <main id='container'
+      @click='globalEventClick'
     >
+    <header class='header' >
             <div 
               v-if="mode == 'normal'" 
               :class='
@@ -31,7 +32,7 @@ new Vue({
                     </path>
                 </svg>
                 <section>
-                  <h1>Mangá <br/>Progress</h1>
+                  <h1>Mangá<br/>Progress</h1>
                 </section>
                 <nav>
                   <!-- Gear SVG -->
@@ -50,7 +51,7 @@ new Vue({
                   </svg>
                  <!-- List SVG -->
                   <svg
-
+                    @click='setVisibleMenu'
                     stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
                       <rect x="0.46" y="3.06" width="23.08" height="2.18"></rect>
                       <rect x="0.46" y="8.29" width="23.08" height="2.18"></rect>
@@ -82,11 +83,14 @@ new Vue({
                       <input
                         :checked='!!(displaySetting.modes.select == option)'
                         type="radio" name="view" :value=option 
+                        @change='setSettingDisplayMode($event, option)'
                       />
                       {{option}}
+                      
                     </label>
 
                     </form>
+                    <!-- 
                     <div id='display-setting-submenu'>
                       <label
                         v-for='(value, key) in displaySetting.ordination.options[displaySetting.ordination.enable]'
@@ -101,19 +105,11 @@ new Vue({
                               ][displaySetting.ordination.select[displaySetting.ordination.enable]] == value
                             )
                           '
-                        />
-                        <!--
-
-                          {{ 
-                            value[displaySetting.ordination.select[displaySetting.ordination.enable]]
-                          }}
-                        -->
-
-                        {{
-                          value
-                        }}
+                        />  
+                        {{ value }}
                       </label>  
                     </div>
+                    -->
                 </nav>
             </div>
             <div 
@@ -154,7 +150,7 @@ new Vue({
                 
                 @dragleave='dragleave'
                 @dragover.prevent='dragover'
-                @drop="drop"
+                @drop="removeCard"
 
 
                   stroke="currentColor" 
@@ -191,10 +187,12 @@ new Vue({
             :key="manga.id"
             :id="manga.id"
           >
+            
             <section
               v-if='displaySetting.modes.select == "list"'
             >
               <header>
+              
                 <h2>{{ manga?.title }}</h2>
                 <span
                   @click.prevent='redirectCurrentChapter($event, manga)'
@@ -209,10 +207,8 @@ new Vue({
                 </span>
               </div>
             </section>
-            <section 
-              v-else
-            >
-               <img :src='manga.cover' />
+            <section v-else >
+               <img  draggable='false' :src='manga.cover' />
             </section>
           </li>
         </ul>
@@ -246,7 +242,7 @@ new Vue({
     },
 
     displaySetting: {
-      visible: true,
+      visible: false,
       ordination: {
         select: {alphabet: 0, progress: 0},
         enable: 'alphabet',
@@ -328,8 +324,14 @@ new Vue({
       this.rawMangas = raw
     },
 
+    setVisibleMenu(){
+      this.displaySetting.visible = !this.displaySetting.visible
+    },
+
     setSettingDisplay(event, key){
-      
+
+      this.setVisibleMenu()
+
       if(this.displaySetting.ordination.select[key] !== undefined){
         this.displaySetting.ordination.enable = key
       }
@@ -338,6 +340,11 @@ new Vue({
       }
 
       this.organizeList()
+    },
+
+    setSettingDisplayMode(event, key){
+      this.setVisibleMenu()
+      this.displaySetting.modes.select = key
     },
 
     enableCardInformation(event, data){
@@ -369,8 +376,8 @@ new Vue({
       this.removing.status = !this.removing.status
     },
     
-    async drop(){
-
+    async removeCard(){
+    
       if( !this.removing.over )
         return
 
@@ -385,6 +392,7 @@ new Vue({
     dragleave(){ this.removing.over = false },
     
     organizeList(){
+      
       switch(this.displaySetting.ordination.enable){
         case 'alphabet':
           if(!this.displaySetting.ordination.select[this.displaySetting.ordination.enable])
@@ -413,15 +421,10 @@ new Vue({
           return 0;
         });
       }
+    },
 
-      // switch(this.displaySetting.ordination.select){
-      //   case 'a-z':
-      //     _sort(this.mangas)
-      //     break
-      //   case 'z-a':
-      //     _sort(this.mangas).reverse()
-      //     break
-      // }
+    globalEventClick(e){
+      console.log(e.target)
     },
 
     messageBar(manga){
@@ -448,6 +451,5 @@ new Vue({
     this.processProgress()
     this.organizeList()
 
-    console.log(this.mangas)
   }
 })
