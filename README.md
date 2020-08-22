@@ -4,7 +4,8 @@
 Gerenciar leitura de mangás.
 
 ## :bulb: Justificativa
-O site onde normalmente leio mangás, tem a necessidade de se logar com o Facebook para realizar o gerenciamento dos mangás lidos pelo usuário, mas não tenho cadastro na rede social, então decidir criar essa extensão Web. Além que gostaria de testa o [Vue.js](https://vuejs.org/).
+O site onde normalmente leio mangás, tem a necessidade de se logar com o Facebook para realizar o gerenciamento dos mangás lidos pelos usuários, mas não tenho cadastro na rede social, então decidir criar essa extensão Web. Além que gostaria de testa o [Vue.js](https://vuejs.org/).
+
 ## 	&#x1F4F8; Screenshot
 <p align="center" display="flex">
     
@@ -30,7 +31,7 @@ git clone git@github.com:dannRocha/manga-progress.git
 
 ## &#x1F5A5;&#xFE0F; Como usar
 
-Nos sites que possuem suporte a extensão, basta acessar a página de cada mangá que deseja acompanhar e clicar na estrela 	(:star:), para que seja adicionado aos seus favoritos.
+Nos sites que possuem suporte a extensão, acesse a página de cada mangá que deseja acompanhar e clique na estrela (:star:) para que seja adicionado aos seus favoritos.
 
 <p align="center">
 	<img src="screenshot/site.png"/>
@@ -43,4 +44,3 @@ Nos sites que possuem suporte a extensão, basta acessar a página de cada mang�
 	<i><strong><strike><a href="http://centraldemangas.online/"><li>Central de Mangás</li></a></strike></strong></i>
 	<i><strong><strike><a href="https://unionmanga.xyz/"><li>Union Mangá</li></a></strike></strong></i>
 </ul>
-
