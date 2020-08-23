@@ -15,6 +15,7 @@ O site onde normalmente leio mangás, tem a necessidade de se logar com o Facebo
   <img width="220" src="screenshot/03.png" />
   <img width="220" src="screenshot/04.png" />
   <img width="220" src="screenshot/05.png" />
+  <img width="220" src="screenshot/06.png" />
 </p>
 
 ## :gear: Instalação
