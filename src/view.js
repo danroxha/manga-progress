@@ -1,11 +1,9 @@
-// import Objects from './lib/utils/Objects.js'
+import error404 from './img/404.js'
 
 new Vue({
   el: '#app',
   template: `
-    <main id='container'
-      @click='globalEventClick'
-    >
+    <main id='container'>
     <header class='header' >
             <div 
               v-if="mode == 'normal'" 
@@ -168,7 +166,7 @@ new Vue({
             </svg>
       </header>
       <section 
-        :class='(mode == "read" || removing.status)? "cards-container cards-blur":"cards-container"' 
+        :class='(mode == "read" || removing.status)? "cards-container cards-blur":"cards-container"'
       >
         <ul
           :class='(displaySetting.modes.select == "list")? "list":  "grid" '
@@ -183,9 +181,10 @@ new Vue({
             @dragend='dragend'
             @mousemove='enableCardInformation($event, manga)'
             @mouseout='disableCardInformation'
-            @click.prevent='redirectPage($event, manga.address)'
-            :key="manga.id"
-            :id="manga.id"
+            @click.prevent='redirectPage($event, manga)'
+            :key="manga.hash"
+            :id="manga.hash"
+            
           >
             
             <section
@@ -212,8 +211,12 @@ new Vue({
               v-else 
             >
               <figure>
-                <img draggable='false' :src='manga.cover' />
-                <p>{{manga.progress + "%" }}</p>
+                <img draggable='false' :src='(manga.cover !== "null")? manga.cover : error404' />
+                <p>{{
+                  (manga.progress !== Infinity) 
+                    ? manga.progress + "%"
+                    : "Click" 
+                }}</p>
               </figure>
               <svg>
                 <circle cx='46' cy='52' r='45'></circle>
@@ -275,7 +278,7 @@ new Vue({
     cardInformation: {
       x: 0, y: 0, data: null,
       enable: false,
-    }
+    },
   },
   methods: {
 
@@ -284,16 +287,17 @@ new Vue({
       this.saveConfiguration()
     },
 
-    redirectPage(_, href){
-      window.open(href)
+    redirectPage(_, manga){
+      window.open(`${manga.address}${manga.id}`)
     },
     
     redirectCurrentChapter(_, manga){
       
       if(!manga.current)
         manga.current++
-
-      window.open(`${manga.address}/${manga.current}#${manga.page}`)
+      
+      let href = `${manga.address}${manga.id}/${manga.current}#${manga.page}`
+      window.open(href)
     },
     
     processProgress() {
@@ -303,7 +307,7 @@ new Vue({
 
         manga.progress = manga.current * HUNDRED_PERCENT / manga.chapters
         manga.progress = Number(manga.progress.toFixed(2))
-        this.rawMangas[manga.id] = manga
+        this.rawMangas[manga.hash] = manga
       }
     },
 
@@ -321,7 +325,7 @@ new Vue({
     
           chrome.storage.sync.get(['currentManga'], ({ currentManga }) => {
           
-            //this.currentManga = mangas[currentManga?.id]
+            //this.currentManga = mangas[currentManga?.hash]
             resolve({favorites: __mangas, raw: __raw })
 
           })
@@ -412,7 +416,7 @@ new Vue({
     },
     
     async removeCard(){
-    
+
       if( !this.removing.over )
         return
 
@@ -457,10 +461,6 @@ new Vue({
       }
     },
 
-    globalEventClick(e){
-      // console.log(e.target)
-    },
-
     messageBar(manga){
       let message = ''
 
@@ -476,7 +476,9 @@ new Vue({
   },
   
   computed: {
- 
+    error404(){
+      return error404
+    },
   },
   
   async mounted(){
