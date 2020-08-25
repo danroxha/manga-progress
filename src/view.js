@@ -131,9 +131,9 @@ new Vue({
               <nav>
                 <p>
                   <!-- 
-                  	<span>Read</span>
-                  	<span>Continue</span>
-                  	<span>Finished</span>
+                    <span>Read</span>
+                    <span>Continue</span>
+                    <span>Finished</span>
                    <span>Awaiting</span>
                   -->
                  <span>{{currentManga?.status}}</span>
@@ -216,13 +216,13 @@ new Vue({
                 <p>{{manga.progress + "%" }}</p>
               </figure>
               <svg>
-					      <circle cx='46' cy='52' r='45'></circle>
+                <circle cx='46' cy='52' r='45'></circle>
                 <circle 
                   cx='46' cy='52' r='45'
                   :style="{ 'stroke-dashoffset': 440 - (280 * manga.progress) / 100}"
                 >
                 </circle>
-				      </svg>
+              </svg>
             </section>
           </li>
         </ul>
@@ -265,6 +265,7 @@ new Vue({
           progress: ['more progress', 'less progress']
         },
       },
+      
       modes: {
         select: 'grid',
         options: ['list', 'grid'],
@@ -278,11 +279,12 @@ new Vue({
   },
   methods: {
 
-  	changeMode(){
-  		this.mode = (this.mode === 'read') ? 'normal' : 'read'
-  	},
+    changeMode(){
+      this.mode = (this.mode === 'read') ? 'normal' : 'read'
+      this.saveConfiguration()
+    },
 
-  	redirectPage(_, href){
+    redirectPage(_, href){
       window.open(href)
     },
     
@@ -296,11 +298,13 @@ new Vue({
     
     processProgress() {
       for( let manga of this.mangas ){
-        manga.progress = manga.current * 100 / manga.chapters
+        
+        const HUNDRED_PERCENT = 100
+
+        manga.progress = manga.current * HUNDRED_PERCENT / manga.chapters
         manga.progress = Number(manga.progress.toFixed(2))
         this.rawMangas[manga.id] = manga
       }
-      
     },
 
     loadFavorites(){
@@ -326,8 +330,24 @@ new Vue({
     },
 
     updateFavorites(){
-      return new Promise((resolve, reject) => {
+      return new Promise((resolve, _) => {
         chrome.storage.sync.set({'favorites': this.rawMangas }, null)
+        resolve({status:  true })
+      })
+    },
+
+    loadConfiguration(){
+      return new Promise((resolve, _) => {
+        chrome.storage.sync.get(['settings'], ( { settings} ) => {
+          this.displaySetting = settings
+          resolve({status: true})
+        })
+      })
+    },
+    
+    saveConfiguration(){
+      return new Promise((resolve, _) => {
+        chrome.storage.sync.set({'settings': this.displaySetting }, null)
         resolve({status:  true })
       })
     },
@@ -342,7 +362,7 @@ new Vue({
       this.displaySetting.visible = !this.displaySetting.visible
     },
 
-    setSettingDisplay(event, key){
+    setSettingDisplay(_, key){
 
       this.setVisibleMenu()
 
@@ -354,11 +374,13 @@ new Vue({
       }
 
       this.organizeList()
+      this.saveConfiguration()
     },
 
-    setSettingDisplayMode(event, key){
+    setSettingDisplayMode(_, key){
       this.setVisibleMenu()
       this.displaySetting.modes.select = key
+      this.saveConfiguration()
     },
 
     enableCardInformation(event, data){
@@ -372,7 +394,6 @@ new Vue({
       this.cardInformation.data = data
       this.cardInformation.x = event.x + margin
       this.cardInformation.y = event.y + margin
-    
     },
 
     disableCardInformation(){
@@ -398,15 +419,14 @@ new Vue({
       delete this.rawMangas[this.removing.component.id]
 
       await this.updateFavorites()
-      await this.syncStorage()
-    
+      this.syncStorage()
     },
 
     dragover(){ this.removing.over = true },
     dragleave(){ this.removing.over = false },
     
     organizeList(){
-      
+    
       switch(this.displaySetting.ordination.enable){
         case 'alphabet':
           if(!this.displaySetting.ordination.select[this.displaySetting.ordination.enable])
@@ -438,7 +458,7 @@ new Vue({
     },
 
     globalEventClick(e){
-      console.log(e.target)
+      // console.log(e.target)
     },
 
     messageBar(manga){
@@ -462,8 +482,8 @@ new Vue({
   async mounted(){
     
     await this.syncStorage()
+    await this.loadConfiguration()
     this.processProgress()
     this.organizeList()
-
   }
 })
