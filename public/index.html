@@ -203,7 +203,6 @@
 
 
     .cards-container {
-      /* background: var(--_2_1-color); */
       overflow-y: auto;
       max-height: 300px;
     }
@@ -283,15 +282,16 @@
     .card:hover div span {
       opacity: 1;
     }
+    
 
     .grid {
+      grid-template-columns: repeat(3, 1fr);
       position: relative;
       display: grid;
-      grid-template-columns: auto auto auto;
-
     }
 
     .grid section {
+      position: relative;
       height: 130px;
     }
 
@@ -309,15 +309,18 @@
     }
 
     .grid section img {
-      width: 100px;
+      width: 100%;
       object-fit: cover;
       height: 130px;
       
     }
     .grid section svg {
+      left: 0;
+      right: 0;
+      margin: 0 auto;
       visibility: hidden;
       position: absolute;
-      width: 100px;
+      width: 101px;
       height: 110px;
     }
 
@@ -341,7 +344,7 @@
 		}
 			
 		.grid section svg circle:nth-child(2){
-			stroke: var(--_3_2-color);
+			stroke: var(--_3-color);
 		}
   
     .grid section figure {
@@ -356,13 +359,14 @@
       position: absolute;
       font-weight: bold;
       font-size: 15pt;
+      font-style: italic;
       top: 0;
       left: 0;
       text-align: center;
       /* background-color: green; */
       width: 100%;
       height: 100%;
-      color: var(--_3_2-color);
+      color: var(--_2-color);
     } 
     
     .grid-box {
