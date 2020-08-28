@@ -101,7 +101,7 @@ async function main(){
     window.addEventListener('hashchange', _ => {
       manga.page = Number((location.hash.length) ? location.hash.replace('#', '') : 1)
       
-      chrome.storage.sync.get(['favorites'], function({favorites}) {
+      chrome.storage.local.get(['favorites'], function({favorites}) {
         
         if(favorites[manga.hash]) {
           
@@ -114,26 +114,26 @@ async function main(){
         
           favorites[manga.hash] = favorite
           
-          chrome.storage.sync.set({'favorites': favorites }, function(){})
+          chrome.storage.local.set({'favorites': favorites }, function(){})
         }
       })
     })
 
-    chrome.storage.sync.set({'currentManga': manga }, function(){})
+    chrome.storage.local.set({'currentManga': manga }, function(){})
 
-    chrome.storage.sync.get(['favorites'], function({favorites}) {
+    chrome.storage.local.get(['favorites'], function({favorites}) {
       
       if(favorites[manga.hash]){
         
         favorites[manga.hash] = updateManga(favorites[manga.hash], manga)
-        chrome.storage.sync.set({'favorites': favorites }, function(){})
+        chrome.storage.local.set({'favorites': favorites }, function(){})
       }
     })
 
         
     $('#btn-add-manga-progress').addEventListener('click', async e => {
        
-      chrome.storage.sync.get(['favorites'], function({favorites}) {
+      chrome.storage.local.get(['favorites'], function({favorites}) {
         
         if( isEmpty(favorites) ){
           favorites = {}
@@ -145,7 +145,7 @@ async function main(){
         else 
           favorites[manga.hash] = manga
         
-        chrome.storage.sync.set({'favorites': favorites }, function() {})
+        chrome.storage.local.set({'favorites': favorites }, function() {})
       })
     })
 
