@@ -313,7 +313,7 @@ new Vue({
 
     loadFavorites(){
       return new Promise((resolve, reject) => {
-        chrome.storage.sync.get(['favorites'], ( { favorites : mangas } ) => {
+        chrome.storage.local.get(['favorites'], ( { favorites : mangas } ) => {
 
           let __mangas = []
           let __raw = mangas
@@ -323,7 +323,7 @@ new Vue({
           }
           
     
-          chrome.storage.sync.get(['currentManga'], ({ currentManga }) => {
+          chrome.storage.local.get(['currentManga'], ({ currentManga }) => {
           
             //this.currentManga = mangas[currentManga?.hash]
             resolve({favorites: __mangas, raw: __raw })
@@ -335,15 +335,17 @@ new Vue({
 
     updateFavorites(){
       return new Promise((resolve, _) => {
-        chrome.storage.sync.set({'favorites': this.rawMangas }, null)
+        chrome.storage.local.set({'favorites': this.rawMangas }, null)
         resolve({status:  true })
       })
     },
 
     loadConfiguration(){
       return new Promise((resolve, _) => {
-        chrome.storage.sync.get(['settings'], ( { settings} ) => {
-          this.displaySetting = settings
+        chrome.storage.local.get(['settings'], ( { settings} ) => {
+          if(settings !== undefined)
+            this.displaySetting = settings
+          
           resolve({status: true})
         })
       })
@@ -351,7 +353,7 @@ new Vue({
     
     saveConfiguration(){
       return new Promise((resolve, _) => {
-        chrome.storage.sync.set({'settings': this.displaySetting }, null)
+        chrome.storage.local.set({'settings': this.displaySetting }, null)
         resolve({status:  true })
       })
     },
