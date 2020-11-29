@@ -165,6 +165,15 @@ new Vue({
                 </path>
             </svg>
       </header>
+      <section v-show='search.enable' class='tool-search'>
+        <input 
+          @input.prevent='applyFilter'
+          type='text'
+          placeholder='Filter'
+          v-model='search.filter'
+        />
+        
+      </section>
       <section 
         :class='(mode == "read" || removing.status)? "cards-container cards-blur":"cards-container"'
       >
@@ -175,7 +184,7 @@ new Vue({
 
             draggable 
             class='card' 
-            v-for='manga in mangas'
+            v-for='manga in list'
             
             @dragstart='dragstart'
             @dragend='dragend'
@@ -250,12 +259,17 @@ new Vue({
   data: {
     mode: 'normal',
     mangas: [],
+    list: [],
     rawMangas: null,
     currentManga: {},
     removing: {
       over: false,
       status: false,
       component: null,
+    },
+    search: {
+      enable: true,
+      filter: null, 
     },
 
     displaySetting: {
@@ -281,9 +295,27 @@ new Vue({
     },
   },
   methods: {
+    applyFilter() {
+      
+      if(!this.search.enable || !this.search.filter.trim() ) {
+        
+        this.organizeList()
+        this.list = this.mangas
 
+        return
+      }
+
+      this.list = this.mangas.
+        filter(manga => manga.title.toLowerCase().match(this.search.filter.toLowerCase())) 
+
+      this.organizeList()
+    },
     changeMode(){
-      this.mode = (this.mode === 'read') ? 'normal' : 'read'
+      
+      const NORMAL = 'normal'
+      const READ   = 'read'
+
+      this.mode = (this.mode === READ) ? NORMAL : READ
       this.saveConfiguration()
     },
 
@@ -405,15 +437,24 @@ new Vue({
     disableCardInformation(){
       this.cardInformation.enable = false
     },
+    enableFieldFilter(){
+      this.search.enable = true
+
+    },
+    disableFieldFilter(){
+      this.search.enable = false
+    },
 
     dragstart(event){
       this.disableCardInformation()
+      this.disableFieldFilter()
       this.removing.status = !this.removing.status
       this.removing.component = event.target
     
     },
 
     dragend(){
+      this.enableFieldFilter()
       this.removing.status = !this.removing.status
     },
     
@@ -475,6 +516,11 @@ new Vue({
 
       return message
     },
+
+    async order(){
+      this.processProgress()
+      this.organizeList()
+    },
   },
   
   computed: {
@@ -487,7 +533,9 @@ new Vue({
     
     await this.syncStorage()
     await this.loadConfiguration()
-    this.processProgress()
-    this.organizeList()
+    await this.order()
+
+    this.list = this.mangas
+
   }
 })
