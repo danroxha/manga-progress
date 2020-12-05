@@ -56,11 +56,12 @@ function getMangaData(){
     manga.address = String(location.href.match(/http?s:\/\/\w*.\w+\/\w+\/\w+?.+[^(\/\d+.\d+)#]/)[0])
     manga.id = Number(location.pathname.match(/mh(\d+)/)[1])
     manga.page = Number((location.hash.length) ? location.hash.replace('#', '') : 1)
-    manga.chapters = Number($(".cap")?.id?.match(/\d+/)[0] ?? 0) 
-    manga.current = Number((location.pathname.match(/(\d+\/(\d+))/)?.length)? location.pathname.match(/(\d+\/(\d+))/)[2] : 0)
+    manga.chapters = Number($(".cap")?.id?.match(/(\d+|\d+.+)$/)[0].replace("_", ".") ?? 0) 
+    manga.current = Number((location.pathname.match(/\w+\d+\/(\d+|\w+.+)$/)?.length)? location.pathname.match(/\w+\d+\/(\d+|\w+.+)$/)[1] : 0)
     manga.progress = 0
     manga.status = String($('.btn-caps')?.textContent ?? null )
     manga.hash = SHA1(manga.title)
+
     
 	// CENTRALDEMANGAS.ONLINE/TITULOS/
 	
