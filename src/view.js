@@ -167,10 +167,11 @@ new Vue({
       </header>
       <section v-show='search.enable' class='tool-search'>
         <input 
+          v-model='search.filter'
           @input.prevent='applyFilter'
           type='text'
           placeholder='Filter'
-          v-model='search.filter'
+          autofocus
         />
         
       </section>
