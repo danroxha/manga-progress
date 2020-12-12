@@ -59,7 +59,7 @@ function getMangaData(){
     manga.chapters = Number($(".cap")?.id?.match(/(\d+|\d+.+)$/)[0].replace("_", ".") ?? 0) 
     manga.current = Number((location.pathname.match(/\w+\d+\/(\d+|\w+.+)$/)?.length)? location.pathname.match(/\w+\d+\/(\d+|\w+.+)$/)[1] : 0)
     manga.progress = 0
-    manga.status = String($('.btn-caps')?.textContent ?? null )
+    manga.status = String($('.w-list-unstyled')?.getElementsByTagName('li')[1].textContent.replace(/(\w+).:/ig, '').trim() ?? null )    
     manga.hash = SHA1(manga.title)
 
     
