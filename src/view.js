@@ -165,7 +165,7 @@ new Vue({
                   : "normal-header"
               '
               >
-              <logo-icon/>
+                <logo-icon/>
                 <section>
                   <h1>Mangá<br/>Progress</h1>
                 </section>
@@ -547,7 +547,9 @@ new Vue({
       delete this.rawMangas[this.removing.component.id]
 
       await this.updateFavorites()
-      this.syncStorage()
+      await this.syncStorage()
+      this.list = this.list.filter(card => card.hash != this.removing.component.id)
+  
     },
 
     dragover(){ this.removing.over = true },
