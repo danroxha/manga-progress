@@ -371,6 +371,7 @@ new Vue({
       enable: false,
     },
   },
+  
   methods: {
     applyFilter() {
       
@@ -387,6 +388,7 @@ new Vue({
 
       this.organizeList()
     },
+
     changeMode(){
       
       const NORMAL = 'normal'
@@ -514,10 +516,12 @@ new Vue({
     disableCardInformation(){
       this.cardInformation.enable = false
     },
+    
     enableFieldFilter(){
       this.search.enable = true
 
     },
+
     disableFieldFilter(){
       this.search.enable = false
     },
