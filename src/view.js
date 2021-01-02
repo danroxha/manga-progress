@@ -156,111 +156,111 @@ new Vue({
   el: '#app',
   template: `
     <main id='container'>
-    <header class='header' >
-            <div 
-              v-if="mode == 'normal'" 
-              :class='
-                (removing.status)
-                  ? "normal-header blur-trash"
-                  : "normal-header"
-              '
+      <header class='header' >
+        <div 
+          v-if="mode == 'normal'" 
+          :class='
+            (removing.status)
+              ? "normal-header blur-trash"
+              : "normal-header"
+          '
+          >
+            <logo-icon/>
+            <section>
+              <h1>Mangá<br/>Progress</h1>
+            </section>
+            <nav>
+            <gear-icon />
+            <list-icon @showMenu="setVisibleMenu" />
+  
+              <form 
+                id="display-setting"
+                v-show="displaySetting.visible"
               >
-                <logo-icon/>
-                <section>
-                  <h1>Mangá<br/>Progress</h1>
-                </section>
-                <nav>
-                 <gear-icon />
-                 <list-icon @showMenu="setVisibleMenu" />
-      
-                  <form 
-                    id="display-setting"
-                    v-show="displaySetting.visible"
+                <label
+                  v-for='(option, key) in displaySetting.ordination.options'
+                >
+                  <input
+                    :checked='!!(displaySetting.ordination.enable == key)'
+                    type="radio" name="ordination"
+                    @change='setSettingDisplay($event, key)'
+                  />
+                  {{ key }}
+                </label>
+                
+                <hr/>
+  
+                <label
+                  v-for='(option, key) in displaySetting.modes.options'
+                >
+                  <input
+                    :checked='!!(displaySetting.modes.select == option)'
+                    type="radio" name="view" :value=option 
+                    @change='setSettingDisplayMode($event, option)'
+                  />
+                  {{option}}
+                  
+                </label>
+  
+                </form>
+                <!-- 
+                <div id='display-setting-submenu'>
+                  <label
+                    v-for='(value, key) in displaySetting.ordination.options[displaySetting.ordination.enable]'
                   >
-                    <label
-                      v-for='(option, key) in displaySetting.ordination.options'
-                    >
-                      <input
-                        :checked='!!(displaySetting.ordination.enable == key)'
-                        type="radio" name="ordination"
-                        @change='setSettingDisplay($event, key)'
-                      />
-                      {{ key }}
-                    </label>
-                    
-                    <hr/>
-
-                    <label
-                      v-for='(option, key) in displaySetting.modes.options'
-                    >
-                      <input
-                        :checked='!!(displaySetting.modes.select == option)'
-                        type="radio" name="view" :value=option 
-                        @change='setSettingDisplayMode($event, option)'
-                      />
-                      {{option}}
-                      
-                    </label>
-
-                    </form>
-                    <!-- 
-                    <div id='display-setting-submenu'>
-                      <label
-                        v-for='(value, key) in displaySetting.ordination.options[displaySetting.ordination.enable]'
-                      >
-                        <input
-                          @change='setSettingDisplay($event, key)'  
-                          type="radio" name="ordination-option"
-                          :checked='
-                            (
-                              displaySetting.ordination.options[
-                                displaySetting.ordination.enable
-                              ][displaySetting.ordination.select[displaySetting.ordination.enable]] == value
-                            )
-                          '
-                        />  
-                        {{ value }}
-                      </label>  
-                    </div>
-                    -->
-                </nav>
-            </div>
-            <div 
-              v-else 
-              :class='
-                (removing.status)
-                  ? "read-header blur-trash"
-                  : "read-header"
-              '
-            >
-              <img :src="currentManga?.cover"/> <!-- https://fakeimg.pl/200/ -->
-              <section>
-                <h1>{{ currentManga?.title }}</h1>
-                <div>
-                  <p>Chapters &nbsp;<span>{{ currentManga?.chapters }}</span></p>
-                  <p>Current &nbsp;<span>{{ currentManga?.current }}</span></p>
+                    <input
+                      @change='setSettingDisplay($event, key)'  
+                      type="radio" name="ordination-option"
+                      :checked='
+                        (
+                          displaySetting.ordination.options[
+                            displaySetting.ordination.enable
+                          ][displaySetting.ordination.select[displaySetting.ordination.enable]] == value
+                        )
+                      '
+                    />  
+                    {{ value }}
+                  </label>  
                 </div>
-              </section>
-              <nav>
-                <p>
-                  <!-- 
-                    <span>Read</span>
-                    <span>Continue</span>
-                    <span>Finished</span>
-                   <span>Awaiting</span>
-                  -->
-                 <span>{{currentManga?.status}}</span>
-
-                </p>
-              </nav>
+                -->
+            </nav>
+        </div>
+        <div 
+          v-else 
+          :class='
+            (removing.status)
+              ? "read-header blur-trash"
+              : "read-header"
+          '
+        >
+          <img :src="currentManga?.cover"/> <!-- https://fakeimg.pl/200/ -->
+          <section>
+            <h1>{{ currentManga?.title }}</h1>
+            <div>
+              <p>Chapters &nbsp;<span>{{ currentManga?.chapters }}</span></p>
+              <p>Current &nbsp;<span>{{ currentManga?.current }}</span></p>
             </div>
-
-            <trash-icon 
-              :state="removing"
-              @dragLeave='dragleave'
-              @dragOver='dragover'
-              @dropItem="removeCard"
-            />
+          </section>
+          <nav>
+            <p>
+              <!-- 
+                <span>Read</span>
+                <span>Continue</span>
+                <span>Finished</span>
+                <span>Awaiting</span>
+              -->
+              <span>{{currentManga?.status}}</span>
+  
+            </p>
+          </nav>
+        </div>
+  
+        <trash-icon 
+          :state="removing"
+          @dragLeave='dragleave'
+          @dragOver='dragover'
+          @dropItem="removeCard"
+        />
       </header>
       
       <filter-tool 
@@ -309,20 +309,22 @@ new Vue({
                 </span>
               </div>
             </section>
+          
             <section
-            class='grid-box'
-            v-else 
+              class='grid-box'
+              v-else 
             >
-            <figure>
-            <img draggable='false' :src='(manga.cover !== "null")? manga.cover : error404' />
-                <p>{{
-                  (manga.progress !== Infinity) 
-                  ? manga.progress + "%"
-                  : "Click" 
-                }}</p>
-                </figure>
-                <circle-progress :percent="manga.progress" />
-              </section>
+              <figure>
+                <img draggable='false' :src='(manga.cover !== "null")? manga.cover : error404' />
+                  <p>{{
+                    (manga.progress !== Infinity) 
+                    ? manga.progress + "%"
+                    : "Click" 
+                  }}</p>
+                  </figure>
+                  <circle-progress :percent="manga.progress" 
+                />
+            </section>
           </li>
         </ul>
         <card-info 
