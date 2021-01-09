@@ -527,14 +527,7 @@ new Vue({
     setSettingDisplay(_, key){
 
       this.setVisibleMenu()
-
-      if(this.displaySetting.ordination.select[key] !== undefined){
-        this.displaySetting.ordination.enable = key
-      }
-      else {
-        this.displaySetting.ordination.select[this.displaySetting.ordination.enable] = key
-      }
-
+      this.displaySetting.ordination.enable = key
       this.organizeList()
       this.saveConfiguration()
     },
@@ -576,7 +569,6 @@ new Vue({
       this.disableFieldFilter()
       this.removing.status = !this.removing.status
       this.removing.component = event.target
-    
     },
 
     dragend(){
