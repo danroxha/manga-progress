@@ -19,14 +19,9 @@ Vue.component('gear-icon', {
 })
 
 Vue.component('list-icon', {
-  methods: {
-    onClicked(){
-      this.$emit('showMenu')
-    }
-  },
   template: `
     <svg
-      @click='onClicked'
+      @click='$emit("Click")'
       stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
         <rect x="0.46" y="3.06" width="23.08" height="2.18"></rect>
         <rect x="0.46" y="8.29" width="23.08" height="2.18"></rect>
@@ -59,17 +54,6 @@ Vue.component('logo-icon', {
 
 Vue.component('trash-icon', {
   props: ['state'],
-  methods: {
-    dragLeave(){
-      this.$emit('dragLeave')
-    },
-    dragOver(){
-      this.$emit('dragOver')
-    },
-    drop(){
-      this.$emit('dropItem')
-    }
-  },
 
   template: `
     <svg
@@ -77,9 +61,9 @@ Vue.component('trash-icon', {
       :class='(state.over)? "fill-red" : "fill-white"'
       v-show="state.status"    
       
-      @dragleave='dragLeave'
-      @dragover.prevent='dragOver'
-      @drop="drop"
+      @dragleave='$emit("DragLeave")'
+      @dragover.prevent='$emit("DragOver")'
+      @drop='$emit("Drop")'
   
       stroke="currentColor" 
       fill="currentColor" 
@@ -120,16 +104,12 @@ Vue.component('card-info', {
 
 Vue.component('filter-tool', {
   props:['search'],
-  methods: {
-    onInput(){
-      this.$emit('filterAction')
-    }
-  },
+
   template: `
     <section v-show="search.enable" class='tool-search'>
       <input
         v-model='search.filter'
-        @input.prevent='onInput'
+        @input.prevent='$emit("Input")'
         type='text'
         placeholder='Filter'
         autofocus
@@ -184,17 +164,17 @@ Vue.component('card-manga', {
   template: `
     <li 
       class='card' 
-      @dragstart='dragStart($event)'
-      @dragend='dragEnd'
-      @mousemove='mouseMove($event, manga)'
-      @mouseout='mouseOut'
+      @dragstart='$emit("DragStart", $event)'
+      @dragend='$emit("DragEnd")'
+      @mousemove='$emit("MouseMove", $event, manga)'
+      @mouseout='$emit("MouseOut")'
       :key='manga.hash'
       :id='manga.hash'
     >
       
       <section
-        class="list"
         v-if='displaySetting.modes.select == "list"'
+        class="list"
         @click.prevent='redirectPage($event, manga)'
         
       >
@@ -209,8 +189,9 @@ Vue.component('card-manga', {
       </section>
     
       <section
-        class='grid-box'
         v-else
+        class='grid-box'
+        @click.prevent='redirectPage($event, manga)'
       >
         <figure>
           <img draggable='false' :src='(manga.cover !== "null")? manga.cover : error404' />
@@ -240,11 +221,6 @@ Vue.component('card-manga', {
     redirectPage(_, manga){
       window.open(`${manga.address}${manga.id}`)
     },
-
-    dragStart($event){ this.$emit('DragStart', $event) },
-    dragEnd(){ this.$emit('DragEnd') },
-    mouseMove($event, manga){ this.$emit('MouseMove', $event, manga); },
-    mouseOut(){ this.$emit('MouseOut') },
   }
 })
 
@@ -262,7 +238,7 @@ Vue.component('menu-list', {
         <input
           :checked='!!(displaySetting.ordination.enable == key)'
           type="radio" name="ordination"
-          @change='onChangeDisplay($event, key)'
+          @change='$emit("ChangeDisplay", $event, key)'
         />
         {{ key }}
       </label>
@@ -275,22 +251,13 @@ Vue.component('menu-list', {
         <input
           :checked='!!(displaySetting.modes.select == option)'
           type="radio" name="view" :value=option 
-          @change='onChangeMode($event, option)'
+          @change='$emit("ChangeMode", $event, option)'
         />
         {{option}}
         
       </label>
     </form>
   `,
-
-  methods: {
-    onChangeDisplay($event, key) {
-      this.$emit('ChangeDisplay', $event, key)
-    },
-    onChangeMode($event, value) {
-      this.$emit('ChangeMode', $event, value)
-    },
-  }
 })
 
 new Vue({
@@ -313,7 +280,7 @@ new Vue({
             <nav>
               
               <gear-icon />
-              <list-icon @showMenu="setVisibleMenu" />
+              <list-icon @Click="setVisibleMenu" />
               
               <menu-list 
                 :displaySetting='displaySetting'
@@ -355,14 +322,14 @@ new Vue({
   
         <trash-icon 
           :state="removing"
-          @dragLeave='dragleave'
-          @dragOver='dragover'
-          @dropItem="removeCard"
+          @DragLeave='dragleave'
+          @DragOver='dragover'
+          @Drop="removeCard"
         />
       </header>
       
       <filter-tool 
-        @filterAction="applyFilter"
+        @Input="applyFilter"
         :search="search"
       />  
       
@@ -400,6 +367,7 @@ new Vue({
       status: false,
       component: null,
     },
+
     search: {
       enable: true,
       filter: null, 
@@ -453,7 +421,6 @@ new Vue({
       this.mode = (this.mode === READ) ? NORMAL : READ
       this.saveConfiguration()
     },
-
     
     processProgress() {
       for( let manga of this.mangas ){
@@ -638,6 +605,8 @@ new Vue({
     await this.syncStorage()
     await this.loadConfiguration()
     await this.order()
+
+
 
     this.list = this.mangas
 
