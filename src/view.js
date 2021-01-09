@@ -481,7 +481,6 @@ new Vue({
     
           chrome.storage.local.get(['currentManga'], ({ currentManga }) => {
           
-            //this.currentManga = mangas[currentManga?.hash]
             resolve({favorites: __mangas, raw: __raw })
 
           })
@@ -557,7 +556,6 @@ new Vue({
     
     enableFieldFilter(){
       this.search.enable = true
-
     },
 
     disableFieldFilter(){
