@@ -142,8 +142,8 @@ Vue.component('circle-progress', {
   props: ['percent'],
   template: `
     <svg>
-    <circle cx='46' cy='52' r='45'></circle>
-    <circle 
+      <circle cx='46' cy='52' r='45'></circle>
+      <circle 
         cx='46' cy='52' r='45'
         :style="{ 'stroke-dashoffset': 440 - (280 * percent) / 100}"
       >
@@ -156,8 +156,7 @@ Vue.component('loading-bar', {
   props: ['manga'],
   template: `
     <div class='loading-bar'>
-      <div class='percentage' :style="{'width': manga.progress + '%'}">
-      </div>
+      <div class='percentage' :style="{'width': manga.progress + '%'}"></div>
       <span>
         {{ messageBar(manga) }}
       </span>
