@@ -249,6 +249,51 @@ Vue.component('card-manga', {
   }
 })
 
+Vue.component('menu-list', {
+  props: ['displaySetting'],
+  
+  template: `
+    <form 
+      id="display-setting"
+      v-show="displaySetting.visible"
+    >
+      <label
+        v-for='(option, key) in displaySetting.ordination.options'
+      >
+        <input
+          :checked='!!(displaySetting.ordination.enable == key)'
+          type="radio" name="ordination"
+          @change='onChangeDisplay($event, key)'
+        />
+        {{ key }}
+      </label>
+      
+      <hr/>
+
+      <label
+        v-for='(option, key) in displaySetting.modes.options'
+      >
+        <input
+          :checked='!!(displaySetting.modes.select == option)'
+          type="radio" name="view" :value=option 
+          @change='onChangeMode($event, option)'
+        />
+        {{option}}
+        
+      </label>
+    </form>
+  `,
+
+  methods: {
+    onChangeDisplay($event, key) {
+      this.$emit('ChangeDisplay', $event, key)
+    },
+    onChangeMode($event, value) {
+      this.$emit('ChangeMode', $event, value)
+    },
+  }
+})
+
 new Vue({
   el: '#app',
   template: `
@@ -267,61 +312,18 @@ new Vue({
               <h1>Mangá<br/>Progress</h1>
             </section>
             <nav>
-            <gear-icon />
-            <list-icon @showMenu="setVisibleMenu" />
-  
-              <form 
-                id="display-setting"
-                v-show="displaySetting.visible"
-              >
-                <label
-                  v-for='(option, key) in displaySetting.ordination.options'
-                >
-                  <input
-                    :checked='!!(displaySetting.ordination.enable == key)'
-                    type="radio" name="ordination"
-                    @change='setSettingDisplay($event, key)'
-                  />
-                  {{ key }}
-                </label>
-                
-                <hr/>
-  
-                <label
-                  v-for='(option, key) in displaySetting.modes.options'
-                >
-                  <input
-                    :checked='!!(displaySetting.modes.select == option)'
-                    type="radio" name="view" :value=option 
-                    @change='setSettingDisplayMode($event, option)'
-                  />
-                  {{option}}
-                  
-                </label>
-  
-                </form>
-                <!-- 
-                <div id='display-setting-submenu'>
-                  <label
-                    v-for='(value, key) in displaySetting.ordination.options[displaySetting.ordination.enable]'
-                  >
-                    <input
-                      @change='setSettingDisplay($event, key)'  
-                      type="radio" name="ordination-option"
-                      :checked='
-                        (
-                          displaySetting.ordination.options[
-                            displaySetting.ordination.enable
-                          ][displaySetting.ordination.select[displaySetting.ordination.enable]] == value
-                        )
-                      '
-                    />  
-                    {{ value }}
-                  </label>  
-                </div>
-                -->
+              
+              <gear-icon />
+              <list-icon @showMenu="setVisibleMenu" />
+              
+              <menu-list 
+                :displaySetting='displaySetting'
+                @ChangeDisplay='setSettingDisplay'
+                @ChangeMode='setSettingDisplayMode'
+              />
             </nav>
         </div>
+
         <div 
           v-else 
           :class='
