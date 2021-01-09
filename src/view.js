@@ -179,6 +179,76 @@ Vue.component('loading-bar', {
     },
   }
 })
+
+Vue.component('card-manga', {
+  props: ['manga', 'displaySetting'],
+  template: `
+    <li 
+      class='card' 
+      @dragstart='dragStart($event)'
+      @dragend='dragEnd'
+      @mousemove='mouseMove($event, manga)'
+      @mouseout='mouseOut'
+      :key='manga.hash'
+      :id='manga.hash'
+    >
+      
+      <section
+        class="list"
+        v-if='displaySetting.modes.select == "list"'
+        @click.prevent='redirectPage($event, manga)'
+        
+      >
+        <header>
+        
+          <h2>{{ manga?.title }}</h2>
+          <span
+            @click.prevent='redirectCurrentChapter($event, manga)'
+          > Go </span>
+        </header>
+        <loading-bar :manga='manga' />
+      </section>
+    
+      <section
+        class='grid-box'
+        v-else
+      >
+        <figure>
+          <img draggable='false' :src='(manga.cover !== "null")? manga.cover : error404' />
+            <p>{{
+              (manga.progress !== Infinity) 
+              ? manga.progress + "%"
+              : "Click" 
+            }}</p>
+            </figure>
+            <circle-progress :percent="manga.progress" 
+          />
+      </section>
+    </li>
+  `,
+
+  methods: {
+
+    redirectCurrentChapter(_, manga){
+      
+      if(!manga.current)
+        manga.current++
+      
+      let href = `${manga.address}${manga.id}/${manga.current}#${manga.page}`
+      window.open(href)
+    },
+
+    redirectPage(_, manga){
+      window.open(`${manga.address}${manga.id}`)
+    },
+
+    dragStart($event){ this.$emit('DragStart', $event) },
+    dragEnd(){ this.$emit('DragEnd') },
+    mouseMove($event, manga){ this.$emit('MouseMove', $event, manga); },
+    mouseOut(){ this.$emit('MouseOut') },
+  }
+})
+
 new Vue({
   el: '#app',
   template: `
@@ -293,66 +363,22 @@ new Vue({
       <filter-tool 
         @filterAction="applyFilter"
         :search="search"
-      />    
+      />  
       
-      <section 
-        :class='(mode == "read" || removing.status)? "cards-container cards-blur":"cards-container"'
-      >
-        <ul
-          :class='(displaySetting.modes.select == "list")? "list":  "grid" '
-        >   
-          <li
+      <section :class='(mode == "read" || removing.status)? "cards-container cards-blur":"cards-container"' >
+        <ul :class='(displaySetting.modes.select == "list")? "list":  "grid" ' >
 
+          <card-manga
             draggable 
-            class='card' 
             v-for='manga in list'
-            
-            @dragstart='dragstart'
-            @dragend='dragend'
-            @mousemove='enableCardInformation($event, manga)'
-            @mouseout='disableCardInformation'
-            @click.prevent='redirectPage($event, manga)'
-            :key="manga.hash"
-            :id="manga.hash"
-            
-          >
-            
-            <section
-              v-if='displaySetting.modes.select == "list"'
-            >
-              <header>
-              
-                <h2>{{ manga?.title }}</h2>
-                <span
-                  @click.prevent='redirectCurrentChapter($event, manga)'
-                > Go </span>
-              </header>
-            
-              <div class='loading-bar'>
-                <div class='percentage' :style="{'width': manga.progress + '%'}">
-                </div>
-                <span>
-                  {{ messageBar(manga) }}
-                </span>
-              </div>
-            </section>
-          
-            <section
-              class='grid-box'
-              v-else 
-            >
-              <figure>
-                <img draggable='false' :src='(manga.cover !== "null")? manga.cover : error404' />
-                  <p>{{
-                    (manga.progress !== Infinity) 
-                    ? manga.progress + "%"
-                    : "Click" 
-                  }}</p>
-                  </figure>
-                  <circle-progress :percent="manga.progress" 
-                />
-            </section>
-          </li>
+            @DragStart='dragstart($event)'
+            @DragEnd='dragend'
+            @MouseMove='enableCardInformation($event, manga)'
+            @MouseOut='disableCardInformation'
+            :manga="manga"
+            :displaySetting="displaySetting"
+          />
+
         </ul>
         <card-info 
           :cardInformation="cardInformation" 
@@ -427,18 +453,6 @@ new Vue({
       this.saveConfiguration()
     },
 
-    redirectPage(_, manga){
-      window.open(`${manga.address}${manga.id}`)
-    },
-    
-    redirectCurrentChapter(_, manga){
-      
-      if(!manga.current)
-        manga.current++
-      
-      let href = `${manga.address}${manga.id}/${manga.current}#${manga.page}`
-      window.open(href)
-    },
     
     processProgress() {
       for( let manga of this.mangas ){
