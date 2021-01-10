@@ -1,4 +1,7 @@
 import error404 from './img/404.js'
+import store from './store/index.js'
+
+
 
 Vue.component('gear-icon', {
   template: `
@@ -83,7 +86,6 @@ Vue.component('trash-icon', {
 })
 
 Vue.component('card-info', {
-  props: ['cardInformation', 'displaySetting'],
   template: `
     <dl
       v-show='!!cardInformation.enable'
@@ -99,7 +101,16 @@ Vue.component('card-info', {
         <dt>Status</dt>
         <dd>{{cardInformation.data?.status}}</dd>
     </dl>
-  `
+  `,
+
+  computed: {
+    displaySetting(){
+      return this.$store.state.settings.display
+    },
+    cardInformation(){
+      return this.$store.state.cardState.cardInformation
+    }
+  },
 })
 
 Vue.component('filter-tool', {
@@ -160,7 +171,7 @@ Vue.component('loading-bar', {
 })
 
 Vue.component('card-manga', {
-  props: ['manga', 'displaySetting'],
+  props: ['manga'],
   template: `
     <li 
       class='card' 
@@ -221,12 +232,17 @@ Vue.component('card-manga', {
     redirectPage(_, manga){
       window.open(`${manga.address}${manga.id}`)
     },
+  },
+
+  computed: {
+    displaySetting(){
+      return this.$store.state.settings.display
+    },
   }
 })
 
 Vue.component('menu-list', {
-  props: ['displaySetting'],
-  
+
   template: `
     <form 
       id="display-setting"
@@ -258,10 +274,17 @@ Vue.component('menu-list', {
       </label>
     </form>
   `,
+
+  computed: {
+    displaySetting(){
+      return this.$store.state.settings.display
+    },
+  }
 })
 
 new Vue({
   el: '#app',
+  store,
   template: `
     <main id='container'>
       <header class='header' >
@@ -283,7 +306,6 @@ new Vue({
               <list-icon @Click="setVisibleMenu" />
               
               <menu-list 
-                :displaySetting='displaySetting'
                 @ChangeDisplay='setSettingDisplay'
                 @ChangeMode='setSettingDisplayMode'
               />
@@ -298,7 +320,7 @@ new Vue({
               : "read-header"
           '
         >
-          <img :src="currentManga?.cover"/> <!-- https://fakeimg.pl/200/ -->
+          <img :src="currentManga?.cover"/>
           <section>
             <h1>{{ currentManga?.title }}</h1>
             <div>
@@ -339,64 +361,33 @@ new Vue({
           <card-manga
             draggable 
             v-for='manga in list'
-            @DragStart='dragstart($event)'
-            @DragEnd='dragend'
-            @MouseMove='enableCardInformation($event, manga)'
+            @DragStart='dragCard($event)'
+            @DragEnd='dropCard'
+            @MouseMove='enableCardInformation([$event, manga])'
             @MouseOut='disableCardInformation'
             :manga="manga"
-            :displaySetting="displaySetting"
           />
 
         </ul>
-        <card-info 
-          :cardInformation="cardInformation" 
-          :displaySetting="displaySetting"
-        />
+        <card-info />
       </section>
     </main>
   `,
   
   data: {
     mode: 'normal',
-    mangas: [],
     list: [],
-    rawMangas: null,
     currentManga: {},
-    removing: {
-      over: false,
-      status: false,
-      component: null,
-    },
-
-    search: {
-      enable: true,
-      filter: null, 
-    },
-
-    displaySetting: {
-      visible: false,
-      ordination: {
-        select: {alphabet: 0, progress: 0},
-        enable: 'alphabet',
-        options: {
-          alphabet: ['order', 'reverse'],
-          progress: ['more progress', 'less progress']
-        },
-      },
-      
-      modes: {
-        select: 'grid',
-        options: ['list', 'grid'],
-      }
-    },  
-
-    cardInformation: {
-      x: 0, y: 0, data: null,
-      enable: false,
-    },
   },
   
   methods: {
+   
+    ...Vuex.mapMutations( ['loadConfiguration', 'saveConfiguration', 'setVisibleMenu']),
+    ...Vuex.mapMutations( [ 'enableCardInformation', 'disableCardInformation']),
+    ...Vuex.mapMutations( [ 'dragstart', 'dragend', 'dragover', 'dragleave']),
+    ...Vuex.mapMutations( [ 'enableFieldFilter', 'disableFieldFilter']),
+    ...Vuex.mapMutations( [ 'loadFavorites', 'removeFavorite']),
+
     applyFilter() {
       
       if(!this.search.enable || !this.search.filter.trim() ) {
@@ -422,69 +413,6 @@ new Vue({
       this.saveConfiguration()
     },
     
-    processProgress() {
-      for( let manga of this.mangas ){
-        
-        const HUNDRED_PERCENT = 100
-
-        manga.progress = manga.current * HUNDRED_PERCENT / manga.chapters
-        manga.progress = Number(manga.progress.toFixed(2))
-        this.rawMangas[manga.hash] = manga
-      }
-    },
-
-    loadFavorites(){
-      return new Promise((resolve, reject) => {
-        chrome.storage.local.get(['favorites'], ( { favorites : mangas } ) => {
-
-          let __mangas = []
-          let __raw = mangas
-
-          for(let key in mangas){
-            __mangas.push(mangas[key])
-          }
-          
-    
-          chrome.storage.local.get(['currentManga'], ({ currentManga }) => {
-          
-            resolve({favorites: __mangas, raw: __raw })
-
-          })
-        })
-      })
-    },
-
-    updateFavorites(){
-      return new Promise((resolve, _) => {
-        chrome.storage.local.set({'favorites': this.rawMangas }, null)
-        resolve({status:  true })
-      })
-    },
-
-    loadConfiguration(){
-      return new Promise((resolve, _) => {
-        chrome.storage.local.get(['settings'], ( { settings} ) => {
-          if(settings !== undefined)
-            this.displaySetting = settings
-          
-          resolve({status: true})
-        })
-      })
-    },
-    
-    saveConfiguration(){
-      return new Promise((resolve, _) => {
-        chrome.storage.local.set({'settings': this.displaySetting }, null)
-        resolve({status:  true })
-      })
-    },
-
-    async syncStorage(){
-      const { favorites, raw } = await this.loadFavorites()
-      this.mangas = favorites
-      this.rawMangas = raw
-    },
-
     setVisibleMenu(){
       this.displaySetting.visible = !this.displaySetting.visible
     },
@@ -503,74 +431,48 @@ new Vue({
       this.saveConfiguration()
     },
 
-    enableCardInformation(event, data){
-      
-      const margin = 10
-      
-      if(this.mode === 'read' )
-        return
-
-      this.cardInformation.enable = true
-      this.cardInformation.data = data
-      this.cardInformation.x = event.x + margin
-      this.cardInformation.y = event.y + margin
-    },
-
-    disableCardInformation(){
-      this.cardInformation.enable = false
-    },
-    
-    enableFieldFilter(){
-      this.search.enable = true
-    },
-
-    disableFieldFilter(){
-      this.search.enable = false
-    },
-
-    dragstart(event){
+    dragCard(event){
+      this.dragstart(event)
       this.disableCardInformation()
       this.disableFieldFilter()
-      this.removing.status = !this.removing.status
-      this.removing.component = event.target
     },
 
-    dragend(){
+    dropCard(){
       this.enableFieldFilter()
-      this.removing.status = !this.removing.status
+      this.dragend()
+    },
+
+    async setData(){
+      this.list = this.mangas
     },
     
     async removeCard(){
 
       if( !this.removing.over )
         return
+      
+      await this.removeFavorite(this.removing.component.id)
+      await this.loadFavorites()
 
-      delete this.rawMangas[this.removing.component.id]
-
-      await this.updateFavorites()
-      await this.syncStorage()
       this.list = this.list.filter(card => card.hash != this.removing.component.id)
   
     },
-
-    dragover(){ this.removing.over = true },
-    dragleave(){ this.removing.over = false },
     
     organizeList(){
-    
+      
       switch(this.displaySetting.ordination.enable){
         case 'alphabet':
           if(!this.displaySetting.ordination.select[this.displaySetting.ordination.enable])
-            this.mangas = _sort(this.mangas, 'title')
+            this.list = _sort(this.list, 'title')
           else 
-            this.mangas = _sort(this.mangas, 'title').reverse()
+            this.list = _sort(this.list, 'title').reverse()
 
           break
         case 'progress':
           if(!this.displaySetting.ordination.select[this.displaySetting.ordination.enable])
-            this.mangas = _sort(this.mangas, 'progress').reverse()
+            this.list = _sort(this.list, 'progress').reverse()
           else
-            this.mangas = _sort(this.mangas, 'progress')
+            this.list = _sort(this.list, 'progress')
       
           break
       }
@@ -579,9 +481,15 @@ new Vue({
       function _sort(list, key)
       {
         return list.sort(function (a, b) {
-          
-          if (a[key] > b[key]) return 1
-          if (a[key] < b[key]) return -1
+          let valueA  = a[key], valueB = b[key]
+
+          if(key == 'title') {
+            valueA = valueA.toLowerCase()
+            valueB = valueB.toLowerCase()
+          }
+
+          if (valueA > valueB) return 1
+          if (valueA < valueB) return -1
           
           return 0;
         });
@@ -589,12 +497,34 @@ new Vue({
     },
 
     async order(){
-      this.processProgress()
+      // this.processProgress()
       this.organizeList()
     },
   },
   
   computed: {
+
+    mangas: {
+      get(){
+        return this.$store.state.storage.mangas
+      },
+      set(value){
+        this.$store.state.storage.mangas = value
+      }
+    },
+
+    displaySetting(){
+      return this.$store.state.settings.display
+    },
+
+    removing(){
+      return this.$store.state.cardState.removing
+    },
+    
+    search(){
+      return this.$store.state.filterState.search
+    },
+
     error404(){
       return error404
     },
@@ -602,13 +532,10 @@ new Vue({
   
   async mounted(){
     
-    await this.syncStorage()
     await this.loadConfiguration()
+    await this.loadFavorites()
+    await this.setData()
     await this.order()
-
-
-
-    this.list = this.mangas
 
   }
 })
