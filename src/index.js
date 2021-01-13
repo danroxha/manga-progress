@@ -210,11 +210,8 @@ new Vue({
       if( !this.removing.over )
         return
       
-      // await this.removeFavorite(this.removing.component.id)
       await Storage.removeFavorite(this.removing.component.id)
-    
-      // await this.loadFavorites()
-
+      
       this.list = this.list.filter(card => card.hash != this.removing.component.id)
   
     },
