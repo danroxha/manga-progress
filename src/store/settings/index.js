@@ -2,6 +2,7 @@ export default {
     namespaced: true,
     
     state: {
+      mode: 'normal',
       display: {
         visible: false,
         ordination: {
@@ -42,9 +43,19 @@ export default {
       setVisibleMenu(state){
         state.displaySetting.visible = !state.displaySetting.visible
       },
+
+      changeMode(state){
+      
+        const NORMAL = 'normal'
+        const READ   = 'read'
+  
+        state.mode = (state.mode === READ) ? NORMAL : READ
+        
+      },
     },
     actions: {},
     gettets: {
       display: state => state.display,
-    },
+      mode: state => state.mode,
+    }, 
   }

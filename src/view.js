@@ -383,7 +383,7 @@ new Vue({
   
   methods: {
    
-    ...Vuex.mapMutations( ['loadConfiguration', 'saveConfiguration', 'setVisibleMenu']),
+    ...Vuex.mapMutations( ['loadConfiguration', 'saveConfiguration', 'setVisibleMenu', 'changeMode']),
     ...Vuex.mapMutations( [ 'enableCardInformation', 'disableCardInformation']),
     ...Vuex.mapMutations( [ 'dragstart', 'dragend', 'dragover', 'dragleave']),
     ...Vuex.mapMutations( [ 'enableFieldFilter', 'disableFieldFilter']),
@@ -513,6 +513,9 @@ new Vue({
       return this.$store.state.settings.display
     },
 
+    mode(){
+      return this.$store.state.settings.mode
+    },
     removing(){
       return this.$store.state.cardState.removing
     },
