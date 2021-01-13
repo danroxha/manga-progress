@@ -129,15 +129,6 @@ new Vue({
 
       this.organizeList()
     },
-
-    changeMode(){
-      
-      const NORMAL = 'normal'
-      const READ   = 'read'
-
-      this.mode = (this.mode === READ) ? NORMAL : READ
-      this.saveConfiguration()
-    },
     
     setVisibleMenu(){
       this.displaySetting.visible = !this.displaySetting.visible
@@ -260,6 +251,5 @@ new Vue({
     await this.loadConfiguration()
     await this.configData()
     await this.order()
-
   }
 })
