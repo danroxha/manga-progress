@@ -22,7 +22,7 @@ O site onde normalmente leio mangás, tem a necessidade de se logar com o Facebo
 
 ### :file_folder: Repositório
 ```sh
-git clone git@github.com:dannRocha/manga-progress.git
+git clone https://github.com/dannRocha/manga-progress.git
 ```
 ### <img width=30 src="screenshot/googlechrome.svg"/> Google Chrome
 * Inicie o Chrome;
