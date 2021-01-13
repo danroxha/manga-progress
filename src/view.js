@@ -377,6 +377,7 @@ new Vue({
   data: {
     mode: 'normal',
     list: [],
+    raw: [],
     currentManga: {},
   },
   
@@ -386,19 +387,18 @@ new Vue({
     ...Vuex.mapMutations( [ 'enableCardInformation', 'disableCardInformation']),
     ...Vuex.mapMutations( [ 'dragstart', 'dragend', 'dragover', 'dragleave']),
     ...Vuex.mapMutations( [ 'enableFieldFilter', 'disableFieldFilter']),
-    ...Vuex.mapMutations( [ 'loadFavorites', 'removeFavorite']),
 
     applyFilter() {
       
       if(!this.search.enable || !this.search.filter.trim() ) {
         
         this.organizeList()
-        this.list = this.mangas
+        this.list = this.raw
 
         return
       }
 
-      this.list = this.mangas.
+      this.list = this.raw.
         filter(manga => manga.title.toLowerCase().match(this.search.filter.toLowerCase())) 
 
       this.organizeList()
@@ -442,22 +442,6 @@ new Vue({
       this.dragend()
     },
 
-    async setData(){
-      this.list = this.mangas
-    },
-    
-    async removeCard(){
-
-      if( !this.removing.over )
-        return
-      
-      await this.removeFavorite(this.removing.component.id)
-      await this.loadFavorites()
-
-      this.list = this.list.filter(card => card.hash != this.removing.component.id)
-  
-    },
-    
     organizeList(){
       
       switch(this.displaySetting.ordination.enable){
@@ -496,22 +480,34 @@ new Vue({
       }
     },
 
+    async configData() {
+      let { mangas }  = await Storage.loadFavorites()
+      
+      this.raw = mangas
+      this.list = mangas.map(Storage.processProgress)
+  
+    },
+    
+    async removeCard(){
+
+      if( !this.removing.over )
+        return
+      
+      // await this.removeFavorite(this.removing.component.id)
+      await Storage.removeFavorite(this.removing.component.id)
+    
+      // await this.loadFavorites()
+
+      this.list = this.list.filter(card => card.hash != this.removing.component.id)
+  
+    },
+    
     async order(){
-      // this.processProgress()
       this.organizeList()
     },
   },
   
   computed: {
-
-    mangas: {
-      get(){
-        return this.$store.state.storage.mangas
-      },
-      set(value){
-        this.$store.state.storage.mangas = value
-      }
-    },
 
     displaySetting(){
       return this.$store.state.settings.display
@@ -533,8 +529,7 @@ new Vue({
   async mounted(){
     
     await this.loadConfiguration()
-    await this.loadFavorites()
-    await this.setData()
+    await this.configData()
     await this.order()
 
   }
