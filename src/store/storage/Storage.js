@@ -23,6 +23,7 @@ export default {
       chrome.storage.local.get(['favorites'], ({ favorites: raw }) => {
         
         let mangas = this.parseManga(raw)
+          .map(this.processProgress)
 
         resolve({ mangas, raw })
       })

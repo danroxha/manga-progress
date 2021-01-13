@@ -201,7 +201,7 @@ new Vue({
       let { mangas }  = await Storage.loadFavorites()
       
       this.raw = mangas
-      this.list = mangas.map(Storage.processProgress)
+      this.list = mangas
   
     },
     
