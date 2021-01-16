@@ -37,15 +37,21 @@ export default {
         class='grid-box'
         @click.prevent='redirectPage($event, manga)'
       >
-        <figure>
-          <img draggable='false' :src='(manga.cover !== "null")? manga.cover : error404' />
+        <div class='loading-image-animation' v-if='manga.loading'>
+          <p>loading</p>
+        </div>
+        <figure v-else>
+          <img draggable='false' :src='manga.imageSource' />
             <p>{{
               (manga.progress !== Infinity) 
               ? manga.progress + "%"
               : "Click" 
             }}</p>
-            </figure>
-            <circle-progress :percent="manga.progress" />
+        </figure>
+        <circle-progress 
+          v-show='!manga.loading' 
+          :percent="manga.progress" 
+        />
       </section>
     </li>
   `,
