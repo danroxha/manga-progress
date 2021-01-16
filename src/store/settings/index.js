@@ -1,3 +1,7 @@
+import Storage from '../storage/Storage.js'
+
+const DB_NAME = 'settings'
+
 export default {
     namespaced: true,
     
@@ -22,22 +26,12 @@ export default {
     },
   
     mutations: {
-      loadConfiguration(state){
-        return new Promise((resolve, _) => {
-          chrome.storage.local.get(['settings'], ( { settings} ) => {
-            if(settings !== undefined)
-              state.display = settings
-            
-            resolve({status: true})
-          })
-        })
+      async loadConfiguration(state){
+        state.display = await Storage.loadDB(DB_NAME)
       },
   
-      saveConfiguration(state){
-        return new Promise((resolve, _) => {
-          chrome.storage.local.set({'settings': state.display }, null)
-          resolve({status:  true })
-        })
+      async saveConfiguration(state) {
+        await Storage.setDB(DB_NAME, state.display, true)
       },
       
       setVisibleMenu(state){
