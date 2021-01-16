@@ -1,49 +1,66 @@
 export default {
 
-  parseManga(raw) {
-    
-    let parse = []
-
-    for (let key in raw)
-      parse.push(raw[key])
-
-    return parse
-  },
-
-  processProgress(manga){
-    
-    return {
-      ...manga,
-      progress: parseFloat((100 * manga.current / manga.chapters).toFixed(2))
-    }
-  },
-
-  loadFavorites() {
+  hasDB(database) {
     return new Promise((resolve, reject) => {
-      chrome.storage.local.get(['favorites'], ({ favorites: raw }) => {
-        
-        let mangas = this.parseManga(raw)
-          .map(this.processProgress)
+      chrome.storage.local.get([database], db => {
+        let size = 0
+        for(let key in db) {
+          size++;
 
-        resolve({ mangas, raw })
+          if(size > 0) break;
+        }
+
+        if(size) resolve(true)
+
+        resolve(false)
+      })
+    })    
+  },
+
+  loadDB(database) {
+
+    if(!database) throw new Error('database name undefined')
+    if(typeof database !== 'string') throw new Error('database name should string')
+
+    return new Promise((resolve, reject) => {
+      chrome.storage.local.get([database], async db => {
+        if(! await this.hasDB(database))
+          reject('database not exist')
+        resolve(db[database])
       })
     })
   },
 
-  removeFavorite(id){
-
-    return new Promise( async (resolve, reject) => {
+  setDB(database, data, force = false) {
+    
+    if(!database) throw new Error('database name undefined')
+    if(!data) throw new Error(`data for ${database} undefined`)
+    if(typeof database !== 'string') throw new Error('database name should string')
+    if(this.hasDB(database) && !force) throw new Error('has database name')
+    
+    return new Promise((resolve, _) => {
       
-      let { raw } = await this.loadFavorites()
+      let db = {}
+      db[database] = data
 
-      if(raw[id])
-        delete raw[id]
-      else
-        reject({status: 404})
-      
-      chrome.storage.local.set({'favorites': raw }, null)
-      resolve({status:  200})
+      chrome.storage.local.set(db, () => {
+        resolve({status:  true })
+      })
     })
   },
 
+  removeDB(database) {
+    
+    if(!database) throw new Error('database name undefined')
+
+    return new Promise((resolve, reject) => {
+
+      if(!this.hasDB(database))
+        reject('database not exist')
+
+      chrome.storage.local.remove([database], () => {
+        resolve({status: 200})
+      })    
+    })
+  },
 }
