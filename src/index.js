@@ -1,9 +1,8 @@
 import error404 from './img/404.js'
 import store, { DBMangas } from './store/index.js'
 import { 
-  CardInfo, CardManga, CircleProgress, ContainerList,
-  FilterTool, GearIcon, ListIcon, LogoIcon, MenuList, 
-  TrashIcon
+  CardInfo, CardManga, ContainerList,
+  FilterTool, TrashIcon, HeaderHome,
  } from './component/index.js'
 
 
@@ -11,74 +10,19 @@ new Vue({
   el: '#app',
   store,
   components: {
-    GearIcon, ListIcon, LogoIcon, TrashIcon,
-    CardInfo, FilterTool, CircleProgress,
-    CardManga, MenuList, ContainerList,
+    CardInfo, CardManga, ContainerList,
+    FilterTool, TrashIcon, HeaderHome,
   },
   template: `
     <main id='container'>
-      <header class='header' >
-        <div 
-          v-if="mode == 'normal'" 
-          :class='
-            (removing.status)
-              ? "normal-header blur-trash"
-              : "normal-header"
-          '
-          >
-            <logo-icon/>
-            <section>
-              <h1>Mangá<br/>Progress</h1>
-            </section>
-            <nav>
-              
-              <gear-icon />
-              <list-icon @Click="setVisibleMenu" />
-              
-              <menu-list 
-                @ChangeDisplay='setSettingDisplay'
-                @ChangeMode='setSettingDisplayMode'
-              />
-            </nav>
-        </div>
-
-        <div 
-          v-else 
-          :class='
-            (removing.status)
-              ? "read-header blur-trash"
-              : "read-header"
-          '
-        >
-          <img :src="currentManga?.cover"/>
-          <section>
-            <h1>{{ currentManga?.title }}</h1>
-            <div>
-              <p>Chapters &nbsp;<span>{{ currentManga?.chapters }}</span></p>
-              <p>Current &nbsp;<span>{{ currentManga?.current }}</span></p>
-            </div>
-          </section>
-          <nav>
-            <p>
-              <!-- 
-                <span>Read</span>
-                <span>Continue</span>
-                <span>Finished</span>
-                <span>Awaiting</span>
-              -->
-              <span>{{currentManga?.status}}</span>
-  
-            </p>
-          </nav>
-        </div>
-  
-        <trash-icon 
+      <header-home>
+         <trash-icon 
           :state="removing"
           @DragLeave='dragleave'
           @DragOver='dragover'
           @Drop="removeCard"
         />
-      </header>
+      </header-home>
       
       <filter-tool 
         @Input="applyFilter"
@@ -109,7 +53,7 @@ new Vue({
   
   methods: {
    
-    ...Vuex.mapMutations( ['loadConfiguration', 'saveConfiguration', 'setVisibleMenu', 'changeMode']),
+    ...Vuex.mapMutations( ['loadConfiguration']),
     ...Vuex.mapMutations( [ 'enableCardInformation', 'disableCardInformation']),
     ...Vuex.mapMutations( [ 'dragstart', 'dragend', 'dragover', 'dragleave']),
     ...Vuex.mapMutations( [ 'enableFieldFilter', 'disableFieldFilter']),
@@ -130,24 +74,6 @@ new Vue({
       this.organizeList()
     },
     
-    setVisibleMenu(){
-      this.displaySetting.visible = !this.displaySetting.visible
-    },
-
-    setSettingDisplay(_, key){
-
-      this.setVisibleMenu()
-      this.displaySetting.ordination.enable = key
-      this.organizeList()
-      this.saveConfiguration()
-    },
-
-    setSettingDisplayMode(_, key){
-      this.setVisibleMenu()
-      this.displaySetting.modes.select = key
-      this.saveConfiguration()
-    },
-
     dragCard(event){
       this.dragstart(event)
       this.disableCardInformation()
@@ -227,9 +153,6 @@ new Vue({
       return this.$store.state.settings.display
     },
 
-    mode(){
-      return this.$store.state.settings.mode
-    },
     removing(){
       return this.$store.state.cardState.removing
     },
@@ -238,8 +161,14 @@ new Vue({
       return this.$store.state.filterState.search
     },
 
-    error404(){
-      return error404
+    ordination() {
+      return this.$store.state.settings.display.ordination.enable
+    }
+  },
+
+  watch: {
+    ordination(){
+      this.organizeList()
     },
   },
   
