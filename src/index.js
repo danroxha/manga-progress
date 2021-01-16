@@ -1,4 +1,3 @@
-import error404 from './img/404.js'
 import store, { DBMangas } from './store/index.js'
 import { 
   CardInfo, CardManga, ContainerList,
@@ -85,21 +84,25 @@ new Vue({
       this.dragend()
     },
 
-    organizeList(){
-      
+    organizeList() {
+
+      const TITLE = 'title'
+      const PROGRESS = 'progress'
+      const ALPHABET = 'alphabet'
+
       switch(this.displaySetting.ordination.enable){
-        case 'alphabet':
+        case ALPHABET:
           if(!this.displaySetting.ordination.select[this.displaySetting.ordination.enable])
-            this.list = _sort(this.list, 'title')
+            this.list = _sort(this.list, TITLE)
           else 
-            this.list = _sort(this.list, 'title').reverse()
+            this.list = _sort(this.list, TITLE).reverse()
 
           break
-        case 'progress':
+        case PROGRESS:
           if(!this.displaySetting.ordination.select[this.displaySetting.ordination.enable])
-            this.list = _sort(this.list, 'progress').reverse()
+            this.list = _sort(this.list, PROGRESS).reverse()
           else
-            this.list = _sort(this.list, 'progress')
+            this.list = _sort(this.list, PROGRESS)
       
           break
       }
@@ -110,7 +113,7 @@ new Vue({
         return list.sort(function (a, b) {
           let valueA  = a[key], valueB = b[key]
 
-          if(key == 'title') {
+          if(key == TITLE) {
             valueA = valueA.toLowerCase()
             valueB = valueB.toLowerCase()
           }
