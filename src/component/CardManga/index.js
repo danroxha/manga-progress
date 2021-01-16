@@ -1,5 +1,4 @@
-import CircleProgress from '../CircleProgress/index.js'
-import LoadingBar from '../LoadingBar/index.js'
+import { CircleProgress, LoadingBar } from '../index.js'
 
 export default {
   name: 'card-manga',
