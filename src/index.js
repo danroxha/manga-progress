@@ -1,5 +1,5 @@
 import error404 from './img/404.js'
-import store, { Storage } from './store/index.js'
+import store, { DBMangas } from './store/index.js'
 import { 
   CardInfo, CardManga, CircleProgress, ContainerList,
   FilterTool, GearIcon, ListIcon, LogoIcon, MenuList, 
@@ -198,7 +198,7 @@ new Vue({
     },
 
     async configData() {
-      let { mangas }  = await Storage.loadFavorites()
+      let { mangas }  = await DBMangas.loadBD()
       
       this.raw = mangas
       this.list = mangas
@@ -210,7 +210,7 @@ new Vue({
       if( !this.removing.over )
         return
       
-      await Storage.removeFavorite(this.removing.component.id)
+      await DBMangas.removeByID(this.removing.component.id)
       
       this.list = this.list.filter(card => card.hash != this.removing.component.id)
   
