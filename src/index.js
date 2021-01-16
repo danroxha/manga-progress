@@ -125,13 +125,41 @@ new Vue({
         });
       }
     },
+    
+    async onlineStatus() {
+      
+      try {
+        const online = fetch('https://google.com')
+        return online.status >= 200 && online.status < 300
+      } catch(err){
+          return false
+      }
+    },
+
+
+    async loadCovers(){
+      if(! await this.onlineStatus()){
+        for(let key in this.raw) {
+            this.raw[key].imageSource = await (import('./img/404.js')).then(data => data.default)
+            this.raw[key].loading = false
+        }
+      }
+      else {
+        for(let key in this.raw) {
+          this.raw[key].imageSource = this.raw[key].cover
+          this.raw[key].loading = false
+        }
+      }
+    },
 
     async configData() {
       let { mangas }  = await DBMangas.loadBD()
       
       this.raw = mangas
-      this.list = mangas
-  
+      this.list = this.raw
+      this.loadCovers()
+      this.organizeList()
+      
     },
     
     async removeCard(){
@@ -142,11 +170,8 @@ new Vue({
       await DBMangas.removeByID(this.removing.component.id)
       
       this.list = this.list.filter(card => card.hash != this.removing.component.id)
+      this.raw = this.raw.filter(card => card.hash != this.removing.component.id)
   
-    },
-    
-    async order(){
-      this.organizeList()
     },
   },
   
@@ -179,6 +204,5 @@ new Vue({
     
     await this.loadConfiguration()
     await this.configData()
-    await this.order()
   }
 })
