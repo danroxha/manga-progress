@@ -1,10 +1,10 @@
-import { CircleProgress, LoadingBar } from '../index.js'
+import { CircleProgress, LoadingBar, LoadingCircle } from '../index.js'
 
 export default {
   name: 'card-manga',
   props: ['manga'],
   components: {
-    CircleProgress, LoadingBar
+    CircleProgress, LoadingBar, LoadingCircle
   },
   template: `
     <li 
@@ -37,9 +37,7 @@ export default {
         class='grid-box'
         @click.prevent='redirectPage($event, manga)'
       >
-        <div class='loading-image-animation' v-if='manga.loading'>
-          <p>loading</p>
-        </div>
+        <loading-circle v-if='manga.loading' />
         <figure v-else>
           <img draggable='false' :src='manga.imageSource' />
             <p>{{

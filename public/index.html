@@ -395,10 +395,6 @@
 
     }
 
-    .loading-image-animation p {
-      color: var(--_1-color);;
-    }
-
     .percentage {
       position: absolute;
       top: 1px;
@@ -426,6 +422,51 @@
       font-size: 14pt;
       outline: none;
     }
+    
+    /* start -----------------------Loading-Circle-------------------------------*/
+
+    .loading-image-animation {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: var(--_3-color);
+    }
+
+    .lds-dual-ring {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 60%;
+      height: 60%;
+      display: flex;
+      
+    }
+
+    .lds-dual-ring:after {
+      content: " ";
+      display: flex;
+      width: 50%;
+      height: 50%;
+      margin: 8px;
+      border-radius: 50%;
+      border: 6px solid #fff;
+      border-color: #fff transparent #fff transparent;
+      animation: lds-dual-ring 1.2s linear infinite;
+    }
+
+    @keyframes lds-dual-ring {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* end -----------------------Loading-Circle-------------------------------*/
+
   </style>
 </head>
 
