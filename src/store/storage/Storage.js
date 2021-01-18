@@ -1,5 +1,9 @@
 export default {
-
+  
+  /**
+   * 
+   * @param {string} database database name
+   */
   hasDB(database) {
     return new Promise((resolve, reject) => {
       chrome.storage.local.get([database], db => {
@@ -17,6 +21,10 @@ export default {
     })    
   },
 
+  /**
+   * 
+   * @param {string} database database name
+   */
   loadDB(database) {
 
     if(!database) throw new Error('database name undefined')
@@ -31,6 +39,12 @@ export default {
     })
   },
 
+  /**
+   * 
+   * @param {string} database database name
+   * @param {any} data any data
+   * @param {boolean} force force database replacement
+   */
   setDB(database, data, force = false) {
     
     if(!database) throw new Error('database name undefined')
@@ -49,6 +63,10 @@ export default {
     })
   },
 
+  /**
+   * 
+   * @param {string} database database name
+   */
   removeDB(database) {
     
     if(!database) throw new Error('database name undefined')
