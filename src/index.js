@@ -129,24 +129,57 @@ new Vue({
     async onlineStatus() {
       
       try {
-        const online = fetch('https://google.com')
+        const CHECK_URL = 'https://img-host.filestatic2.xyz/mangas_files/one-piece-br/image_one-piece-br_full.webp'
+        const online = await fetch(CHECK_URL).then(response => response)
         return online.status >= 200 && online.status < 300
       } catch(err){
           return false
       }
     },
 
+    getImage(url){
+      return fetch(url)
+        .then(response => response.blob())
+        .then(blob => new Promise((resolve, reject) => {
+            
+            const reader = new FileReader()
+            if(!!blob.type.match('image'))
+              reader.onloadend = () => resolve(reader.result)
+            else 
+              throw new Error('not is image')
+          
+            reader.onerror = reject
+            reader.readAsDataURL(blob)
+          })
+        )
+
+    }, 
+
     async loadCovers(){
       if(! await this.onlineStatus()){
         for(let key in this.raw) {
-            this.raw[key].imageSource = await (import('./img/404.js')).then(data => data.default)
-            this.raw[key].loading = false
+          (import('./img/404.js'))
+            .then(data => {
+              this.raw[key].imageSourcedata.default
+              this.raw[key].loading = false
+            })  
         }
       }
       else {
         for(let key in this.raw) {
-          this.raw[key].imageSource = this.raw[key].cover
-          this.raw[key].loading = false
+          this.getImage(this.raw[key].cover)
+            .then( async image => {
+              this.raw[key].imageSource = image    
+              this.raw[key].loading = false
+            })
+            .catch(async () => {
+              (import('./img/404.js'))
+                .then(data => {
+                  this.raw[key].imageSource = data.default
+                  this.raw[key].loading = false
+                })  
+            })
+          
         }
       }
     },
