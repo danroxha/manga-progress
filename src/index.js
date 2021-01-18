@@ -168,11 +168,11 @@ new Vue({
       else {
         for(let key in this.raw) {
           this.getImage(this.raw[key].cover)
-            .then( async image => {
+            .then(image => {
               this.raw[key].imageSource = image    
               this.raw[key].loading = false
             })
-            .catch(async () => {
+            .catch(() => {
               (import('./img/404.js'))
                 .then(data => {
                   this.raw[key].imageSource = data.default
