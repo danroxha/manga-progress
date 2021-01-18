@@ -136,7 +136,6 @@ new Vue({
       }
     },
 
-
     async loadCovers(){
       if(! await this.onlineStatus()){
         for(let key in this.raw) {
@@ -204,5 +203,6 @@ new Vue({
     
     await this.loadConfiguration()
     await this.configData()
+    
   }
 })
