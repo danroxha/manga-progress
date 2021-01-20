@@ -160,7 +160,7 @@ new Vue({
         for(let key in this.raw) {
           (import('./img/404.js'))
             .then(data => {
-              this.raw[key].imageSourcedata.default
+              this.raw[key].imageSource = data.default
               this.raw[key].loading = false
             })  
         }
