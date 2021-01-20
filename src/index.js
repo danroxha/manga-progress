@@ -129,7 +129,7 @@ new Vue({
     async onlineStatus() {
       
       try {
-        const CHECK_URL = 'https://img-host.filestatic2.xyz/mangas_files/one-piece-br/image_one-piece-br_full.webp'
+        const CHECK_URL = 'http://worldclockapi.com/api/json/utc/now'
         const online = await fetch(CHECK_URL).then(response => response)
         return online.status >= 200 && online.status < 300
       } catch(err){
