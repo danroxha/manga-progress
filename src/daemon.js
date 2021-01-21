@@ -31,7 +31,7 @@ function updateManga(favorite, manga){
     favorite.current = manga.current
   }
 
-  if(manga?.cover !== 'null' || !favorite.cover?.length && favorite.cover?.length < manga.cover ){
+  if(manga?.cover !== null && !favorite?.cover !== manga?.cover){
     favorite.cover = manga.cover
   }
 
@@ -39,6 +39,9 @@ function updateManga(favorite, manga){
     favorite.status = manga.status
   }
 
+  if(manga.address !== favorite.address) {
+    favorite.address = manga.address
+  }
   
   return favorite
 }
