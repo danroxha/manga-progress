@@ -1,5 +1,6 @@
 export { default as CircleProgress } from './CircleProgress/index.js'
 export { default as CardInfo } from './CardInfo/index.js'
+export { default as Container } from './Container/index.js'
 export { default as FilterTool } from './FilterTool/index.js'
 export { default as GearIcon } from './GearIcon/index.js'
 export { default as ListIcon } from './ListIcon/index.js'
