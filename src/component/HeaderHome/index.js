@@ -22,7 +22,7 @@ export default {
           </section>
           <nav>
             
-            <gear-icon />
+            <router-link to="/config"><gear-icon /></router-link>
             <list-icon @Click="setVisibleMenu" />
             
             <menu-list 
