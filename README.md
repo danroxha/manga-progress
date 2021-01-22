@@ -1,3 +1,8 @@
+![License](https://img.shields.io/github/license/dannrocha/manga-progress)
+![Repo size](https://img.shields.io/github/repo-size/dannrocha/manga-progress)
+![Last commit](https://img.shields.io/github/last-commit/dannRocha/manga-progress)
+![Dev](https://img.shields.io/badge/daniel%20rocha-dev-green)
+
 # *Manga Progress*
 
 ## :dart: Objetivo
