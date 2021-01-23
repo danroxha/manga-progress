@@ -31,7 +31,7 @@ function updateManga(favorite, manga){
     favorite.current = manga.current
   }
 
-  if(manga?.cover !== null && !favorite?.cover !== manga?.cover){
+  if(manga?.cover !== 'null' && !favorite?.cover !== manga?.cover){
     favorite.cover = manga.cover
   }
 
