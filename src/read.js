@@ -23,7 +23,7 @@ function createBarFooter(pageData) {
 
 
   const { url, title, pageNumber, chapters } = pageData
-  const request = { url, page: pageNumber, start: false, chapters }
+  const request = { url, page: pageNumber, chapters }
 
   const nodeFooter  = document.createElement('footer')
   const nodeTitle   = document.createElement('h1')
@@ -59,42 +59,37 @@ function createBarFooter(pageData) {
   })
 
   function nextPage(request) {
-    
-    if(!request.start) {
-      
-      const pageIndex = request.chapters.indexOf(request.page)
-      const nextIndex = request.chapters[pageIndex + 1]
+          
+    const pageIndex = request.chapters.indexOf(request.page)
+    const nextIndex = request.chapters[pageIndex + 1]
 
-      if( nextIndex )
-        request.page = nextIndex
-      else {
-        alert(`Last Chapter: ${request.page}`)
-        return;
-      }
-
-      request.start = true
-      window.location.replace(`${request.url}/${request.page}`)
-
+    if( nextIndex )
+      request.page = nextIndex
+    else {
+      alert(`Last Chapter: ${request.page}`)
+      return;
     }
+
+    request.start = true
+    window.location.replace(`${request.url}/${request.page}`)
+
   }
 
   function previousPage(request) {
-    if(!request.start) {
 
-      const pageIndex = request.chapters.indexOf(request.page)
-      const nextIndex = request.chapters[pageIndex - 1]
+    const pageIndex = request.chapters.indexOf(request.page)
+    const nextIndex = request.chapters[pageIndex - 1]
 
-      if( nextIndex )
-        request.page = nextIndex
-      else {
-        alert(`First Chapter: ${request.page}`)
-        return;
-      }
-      
-      request.start = true
-      window.location.replace(`${request.url}/${request.page}`)
-      
+    if( nextIndex )
+      request.page = nextIndex
+    else {
+      alert(`First Chapter: ${request.page}`)
+      return;
     }
+    
+    request.start = true
+    window.location.replace(`${request.url}/${request.page}`)
+    
   }
 }
 
