@@ -20,8 +20,8 @@
   			"https://mangahosted.com/manga/*",
   			"https://mangahostz.com/manga/*"
   		],
-  		"css": [ "src/css/style.css" ],
-  		"js": ["src/daemon.js"]
+  		"css": [ "src/css/style.css", "src/css/focus.css" ],
+  		"js": ["src/daemon.js", "src/read.js"]
   	}
   ] 
 }
