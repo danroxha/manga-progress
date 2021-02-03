@@ -27,9 +27,9 @@ function createBarFooter(pageData) {
 
   const nodeFooter  = document.createElement('footer')
   const nodeTitle   = document.createElement('h1')
-  const nodeAncor   = document.createElement('a')
+  const nodeAnchor  = document.createElement('a')
   const nodeSection = document.createElement('section')
-  const nodeButton = new Array(2)
+  const nodeButton  = new Array(2)
   
   nodeButton[0] = document.createElement('button')
   nodeButton[1] = document.createElement('button')
@@ -40,9 +40,9 @@ function createBarFooter(pageData) {
   nodeButton[1].innerText = '>>'
 
   nodeFooter.setAttribute('class', 'bar-footer')
-  nodeAncor.innerText = title
-  nodeAncor.href = url
-  nodeTitle.appendChild(nodeAncor)
+  nodeAnchor.innerText = title
+  nodeAnchor.href = url
+  nodeTitle.appendChild(nodeAnchor)
 
   nodeFooter.appendChild(nodeTitle)
 
