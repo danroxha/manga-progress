@@ -64,15 +64,10 @@ function createBarFooter(pageData) {
     const nextIndex = request.chapters[pageIndex + 1]
 
     if( nextIndex )
-      request.page = nextIndex
-    else {
+      window.location.replace(`${request.url}/${nextIndex}`)
+    else 
       alert(`Last Chapter: ${request.page}`)
-      return;
-    }
-
-    request.start = true
-    window.location.replace(`${request.url}/${request.page}`)
-
+  
   }
 
   function previousPage(request) {
@@ -81,15 +76,10 @@ function createBarFooter(pageData) {
     const nextIndex = request.chapters[pageIndex - 1]
 
     if( nextIndex )
-      request.page = nextIndex
-    else {
+      window.location.replace(`${request.url}/${nextIndex}`)
+    else
       alert(`First Chapter: ${request.page}`)
-      return;
-    }
-    
-    request.start = true
-    window.location.replace(`${request.url}/${request.page}`)
-    
+     
   }
 }
 
