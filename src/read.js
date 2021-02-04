@@ -13,7 +13,7 @@ const readMode = {
 
   loadData() {
     this.data.url      = String(location.href.match(/http?s:\/\/\w*.\w+\/\w+\/\w+?.+[^(\/\d+.\d+)#]/)[0])
-    this.data.title    = String($$('.title')[0]?.textContent ?? $('.html-embed-3')?.children[0]?.children[0]?.textContent?.match(/(\w+.*[-])/)[0]?.slice(0, -2))
+    this.data.title    = String(document.querySelectorAll('.title')[0]?.textContent ?? document.querySelector('.html-embed-3')?.children[0]?.children[0]?.textContent?.match(/(\w+.*[-])/)[0]?.slice(0, -2))
     this.data.page     = Number((location.pathname.match(/\w+\d+\/(\d+|\w+.+)$/)?.length)? location.pathname.match(/\w+\d+\/(\d+|\w+.+)$/)[1] : 0)
     this.data.chapters = Array.from(document.querySelector('select').getElementsByTagName('option')).map(({value}) => Number(value), [])
     
