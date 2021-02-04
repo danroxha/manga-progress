@@ -64,7 +64,7 @@ function createBarFooter(pageData) {
     const nextIndex = request.chapters[pageIndex + 1]
 
     if( nextIndex )
-      window.location.replace(`${request.url}/${nextIndex}`)
+      window.location.assign(`${request.url}/${nextIndex}`)
     else 
       alert(`Last Chapter: ${request.page}`)
   
@@ -76,7 +76,7 @@ function createBarFooter(pageData) {
     const nextIndex = request.chapters[pageIndex - 1]
 
     if( nextIndex )
-      window.location.replace(`${request.url}/${nextIndex}`)
+      window.location.assign(`${request.url}/${nextIndex}`)
     else
       alert(`First Chapter: ${request.page}`)
      
