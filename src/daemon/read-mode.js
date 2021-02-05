@@ -53,8 +53,8 @@ const readMode = {
     nodeButton[0] = document.createElement('button')
     nodeButton[1] = document.createElement('button')
 
-    nodeButton[0].addEventListener('click', this.previousPage)
-    nodeButton[1].addEventListener('click', this.nextPage)
+    nodeButton[0].addEventListener('click', () => this.previousPage())
+    nodeButton[1].addEventListener('click', () => this.nextPage())
     nodeButton[0].innerText = '<<'
     nodeButton[1].innerText = '>>'
 
