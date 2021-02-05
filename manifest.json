@@ -21,7 +21,7 @@
   			"https://mangahostz.com/manga/*"
   		],
   		"css": [ "src/daemon/css/style.css", "src/daemon/css/focus.css" ],
-  		"js": ["src/daemon/scrape-data.js", "src/daemon/read-mode.js"]
+  		"js": ["src/daemon/utils/index.js","src/daemon/scrape-data.js", "src/daemon/read-mode.js"]
   	}
   ] 
 }
