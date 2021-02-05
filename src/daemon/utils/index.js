@@ -6,6 +6,10 @@ Object.prototype.isEmpty = function() {
   return true
 }
 
+Date.prototype.isValided = function() {
+  return !isNaN(this.valueOf())
+}
+
 /**
 *
 *  Secure Hash Algorithm (SHA1)
