@@ -6,7 +6,7 @@ const scrapeData = {
   data: {
     title: '', cover: '', address: '', id: '',
     page: '', chapters: '', current: '', progress: '',
-    status: '', hash: '',
+    status: '', hash: '', lastUpdate: ''
   },
 
   enable() {
@@ -83,6 +83,8 @@ const scrapeData = {
         this.data.progress = 0
         this.data.status = String($('.w-list-unstyled')?.getElementsByTagName('li')[1].textContent.replace(/(\w+).:/ig, '').trim() ?? null )    
         this.data.hash = SHA1(this.data.title)
+        this.data.lastUpdate =  String(new Date(Date.parse(document.querySelector('.pop-content')?.querySelector('small')?.innerText.match(/\s+(\w+\s+\d+.+\d+)$/)[0]?.trim()?.replace(',', ''))))
+
         break;
       }
 
@@ -93,7 +95,13 @@ const scrapeData = {
   },
 
   updateData(favorite) {
- 
+
+    const oldDate = new Date(favorite.lastUpdate)
+    const newDate = new Date(this.data.lastUpdate)
+    if(newDate.isValided() && !oldDate.isValided() || newDate.isValided()){
+      favorite.lastUpdate = this.data.lastUpdate
+    }
+
     if( !favorite.id !== this.data.id) {
       favorite.id = this.data.id
     }
