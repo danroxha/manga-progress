@@ -4,7 +4,13 @@ const readMode = {
   enable() {
     this.loadData()
     this.clearPage()
-    this.createBar()
+    
+    chrome.storage.local.get(['configuration'], localDB => {
+      let storage = localDB['configuration']
+      if(storage.switch.floatmenu.enable)
+        this.createBar()
+    })
+    
   },
   
   canEnable() {
@@ -99,5 +105,10 @@ const readMode = {
   },
 }
 
-if(readMode.canEnable())
-  readMode.enable()
+chrome.storage.local.get(['configuration'], localDB => {
+  let storage = localDB['configuration']
+  if(storage.switch.readmode.enable) {
+    if(readMode.canEnable())
+    readMode.enable()
+  }
+})
