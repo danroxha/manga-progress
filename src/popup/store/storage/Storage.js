@@ -92,6 +92,16 @@ export default {
         resolve(this._parseByte(bytes, format))
       })
     })
+  },
+
+  /**
+   * 
+   * @param {string} format capacity return format [megabyte, kilobyte, default = byte]
+   */
+  capacityDB(format) {
+    return this._parseByte(chrome.storage.local.QUOTA_BYTES, format)
+  },
+
   /**
    * 
    * @param {number} bytes integer bytes
