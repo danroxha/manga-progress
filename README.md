@@ -9,7 +9,7 @@
 Gerenciar leitura de mangás.
 
 ## :bulb: Justificativa
-O site onde normalmente leio mangás, tem a necessidade de se logar com o Facebook para realizar o gerenciamento dos mangás lidos pelos usuários, mas não tenho cadastro na rede social, então decidir criar essa extensão Web. Além que gostaria de testa o [Vue.js](https://vuejs.org/).
+O site onde normalmente leio mangás, tem a necessidade de logar-se com o Facebook para realizar o gerenciamento dos mangás lidos pelos usuários, mas não tenho cadastro na rede social, então decidir criar essa extensão Web. Além que gostaria de testar o [Vue.js](https://vuejs.org/).
 
 ## 	&#x1F4F8; Screenshot
 <p align="center" display="flex">
