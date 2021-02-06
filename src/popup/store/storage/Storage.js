@@ -81,4 +81,32 @@ export default {
       })    
     })
   },
+  
+  /**
+   * 
+   * @description returns the memory used
+   */
+  memoryUsedDB(format) {
+    return new Promise((resolve, reject) => {
+      chrome.storage.local.getBytesInUse( bytes => {
+        resolve(this._parseByte(bytes, format))
+      })
+    })
+  /**
+   * 
+   * @param {number} bytes integer bytes
+   * @param {string} format format bytes [megabyte, kilobyte, default = byte]
+   */
+  _parseByte(bytes, format) {
+    
+    const MEGABYTE = 1e6;
+    const KILOBYTE = 1e3;
+
+    switch (format?.toLowerCase()) {
+      case 'megabyte': return parseFloat((bytes / MEGABYTE).toFixed(2))
+      case 'kilobyte': return parseFloat((bytes / KILOBYTE).toFixed(2))
+      default:
+        return bytes
+    }
+  }
 }
