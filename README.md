@@ -44,9 +44,6 @@ Nos sites que possuem suporte a extensão, acesse a página de cada mangá que d
 </p>
 
 ## &#x1F477;&#x1F3FE;&#x200D;&#x2642;&#xFE0F; Suporte
-
-<ul>
-	<i><strong><a href="https://mangahosted.com/"><li>Mangá Host</li></a></strong></i>
-	<i><strong><strike><a href="http://centraldemangas.online/"><li>Central de Mangás</li></a></strike></strong></i>
-	<i><strong><strike><a href="https://unionmanga.xyz/"><li>Union Mangá</li></a></strike></strong></i>
-</ul>
+- ***[Mangá Host](https://mangahosted.com/)***
+- ~~***[Central de Mangás](http://centraldemangas.online/)***~~
+- ~~***[Union Mangá](https://unionmanga.xyz/)***~~
