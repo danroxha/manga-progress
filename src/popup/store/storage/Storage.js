@@ -24,6 +24,26 @@ export default {
   /**
    * 
    * @param {string} database database name
+   * @param {object} data any data
+   */
+  createDB(database, data) {
+
+    if(!data) data = {}
+
+    return new Promise(async(resolve, reject) => {
+      if(this.hasDB(database))
+        reject({status: 406, msg: `Error:[createDB] has database name '${database}'`})
+
+      await this.setDB(database, data, true)
+
+      resolve({status: 201})
+
+    })
+  },
+
+  /**
+   * 
+   * @param {string} database database name
    */
   loadDB(database) {
 
