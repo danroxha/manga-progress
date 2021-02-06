@@ -8,7 +8,7 @@ export default {
     return new Promise((resolve, reject) => {
       chrome.storage.local.get([database], db => {
         let size = 0
-        for(let key in db) {
+        for(let _ in db) {
           size++;
 
           if(size > 0) break;
