@@ -1,13 +1,16 @@
+export { default as ArrowBackIcon } from './ArrowBackIcon/index.js'
 export { default as CircleProgress } from './CircleProgress/index.js'
 export { default as CardInfo } from './CardInfo/index.js'
 export { default as Container } from './Container/index.js'
 export { default as FilterTool } from './FilterTool/index.js'
 export { default as GearIcon } from './GearIcon/index.js'
+export { default as GithubIcon } from './GithubIcon/index.js'
 export { default as ListIcon } from './ListIcon/index.js'
 export { default as LoadingBar } from './LoadingBar/index.js'
 export { default as LoadingCircle } from './LoadingCircle/index.js'
 export { default as LogoIcon } from './LogoIcon/index.js'
 export { default as MenuList } from './MenuList/index.js'
+export { default as ToogleSwitch } from './ToggleSwitch/index.js'
 export { default as TrashIcon } from './TrashIcon/index.js'
 
 // module component
