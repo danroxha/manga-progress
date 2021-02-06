@@ -42,6 +42,7 @@
 
     .container {
       width: 400px;
+      height: 450px;
       position: relative;
     }
 
@@ -467,6 +468,183 @@
     }
 
     /* end -----------------------Loading-Circle-------------------------------*/
+    /* start --------------------- Button Switch ------------------------------*/
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 60px;
+      height: 34px;
+    }
+
+    /* Hide default HTML checkbox */
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    /* The slider */
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      -webkit-transition: .3s;
+      transition: .3s;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 26px;
+      width: 26px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      -webkit-transition: .3s;
+      transition: .3s;
+    }
+
+    input:checked + .slider {
+      background-color: var(--_3-color);
+    }
+
+    input:focus + .slider {
+      box-shadow: 0 0 1px #2196F3;
+    }
+
+    input:checked + .slider:before {
+      -webkit-transform: translateX(26px);
+      -ms-transform: translateX(26px);
+      transform: translateX(26px);
+    }
+
+    /* Rounded sliders */
+    .slider.round {
+      border-radius: 34px;
+    }
+
+    .slider.round:before {
+      border-radius: 50%;
+    }
+
+    .toogle-style {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .toogle-style:hover {
+      cursor: pointer;
+      background-color: rgba(0, 0, 0, 0.07);
+    }
+
+    .progress-store {
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      width: 100%;
+      border-radius: 20px; 
+    }
+
+    .progress-store::-webkit-progress-value{
+      background-image:
+	   -webkit-linear-gradient(-45deg, transparent 33%, rgba(0, 0, 0, .1) 33%, rgba(0,0, 0, .1) 66%, transparent 66%),
+	   -webkit-linear-gradient(top, rgba(255, 255, 255, .25), rgba(0, 0, 0, .25)),
+	   -webkit-linear-gradient(left,var(--_3_2-color),var(--_3_1-color));
+      border-radius: 20px; 
+      /* background-size: 35px 20px, 100% 100%, 100% 100%; */
+    }
+
+    .header-config {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 20px;
+      height: 100%;
+      box-shadow: 2px 2px 2px var(--_2-color);
+      z-index: 1;
+    }
+    
+    .header-config div {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .header-config div svg {
+      padding: 0;
+      font-size: 20pt;
+    }
+
+    .header-config div h2 {
+      font-size: 11pt;
+    }
+
+    .header-config p {
+      font-size: 9pt;
+      text-align: right;
+    }
+
+    .container-settings {
+      background-color: var(--_1-color);
+      display: grid;
+    }
+
+    .container-settings section label,  .container-settings section button{
+      margin: 2px 0px;
+      width: 100%;   
+    }
+
+    .container-settings section div  {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .container-settings header, .container-settings section {
+      padding: 0 10px;
+    }
+
+    .container-settings section {
+      overflow-y: auto;
+      padding-top: 10px;
+      padding-bottom: 5px;
+      /* padding: 5px 0; */
+    }
+
+    .container-settings section button {
+      height: 34px;
+      border: none;
+      background-color:#ccc;
+      outline: none;
+    }
+
+    .container-settings section button:hover {
+      background-color: var(--_3-color);
+      cursor: pointer;
+    }
+    .container-settings section button:active {
+      background-color: var(--_3_1-color);
+    }
+
+    .container-settings footer {
+      background-color: rgba(0, 0, 0, 0.07);
+      /* margin-top: 4px; */
+      box-shadow: -1px -1px 5px var(--_2-color);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-style: italic;
+      font-weight: bold;
+      height: 20px;
+      z-index: 1;
+    }
+
+    .container-settings footer:hover {
+      cursor: pointer;
+    }
 
   </style>
 </head>
