@@ -35,27 +35,11 @@ export default {
     if(! await Storage.hasDB(DB_NAME))
       await this.createDB()
 
-      return this._sort(await Storage.loadDB(DB_NAME))
+      return await Storage.loadDB(DB_NAME)
   },
 
    /**
     * 
     * @param {object|configuration} config 
     */
-  _sort(config){
-    config.switch = Object.keys(config.switch)
-      .sort((keyA, keyB) => {
-        
-        if(config.switch[keyA].label > config.switch[keyB].label) return 1;
-        if(config.switch[keyA].label < config.switch[keyB].label) return -1;
-        
-        return 0;
-      })
-      .reduce((acc, key) => {
-        acc[key] = config.switch[key]
-        return acc
-      }, {})
-
-    return config
-  },
 }
