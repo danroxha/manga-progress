@@ -6,11 +6,11 @@ export default {
   config: {
     dbname: 'configuration',
     switch: {
-      readmode: {enable: true, label: 'Enable reading mode'},
-      floatmenu: {enable: true, label: 'Enable read mode floating menu'},
-      hidemanga: {enable: false, label: 'Hide full mangas'},
-      offline: {enable: false, label: 'Offline manga covers', sublabel: 'This option reduces the storage capacity of the database'},
-      date: {enable: false, label: 'Show date in list' },
+      readmode: {enable: true},
+      floatmenu: {enable: true},
+      hidemanga: {enable: false},
+      offline: {enable: false },
+      date: {enable: false},
     },
   },
 
