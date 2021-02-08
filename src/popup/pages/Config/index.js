@@ -33,7 +33,7 @@ export default {
 				</div>
 
 			</section>
-			<footer @click='redirect("https://github.com/dannRocha")'>
+			<footer @click='redirect'>
 				By Daniel Rocha &nbsp;
 				<github-icon/>
 			</footer>
@@ -80,8 +80,8 @@ export default {
 
 		},
 
-		redirect(url){
-			window.open(url)
+		redirect(){
+			window.open("https://github.com/dannRocha")
 		},
 
 		async loadStatusStorage(){
