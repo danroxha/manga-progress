@@ -19,8 +19,10 @@ export default {
       <section>
         <toogle-switch 
           v-for='prop in config.switch'
-          styleClass='toogle-style' 
-          @Change='saveConfig' :props='prop'	
+            :key='prop.label'
+            :props='prop'
+          styleClass='toogle-style'
+          @Change='saveConfig'
         >
           <h3> {{ prop.label}} </h3>
         </toogle-switch>
