@@ -47,7 +47,15 @@ export default {
 				statusMemory: 0,
 				statusCapacity: 0,
 			},
-			config: {},
+			config: {
+				switch: {
+					floatmenu: {enable: false, label: 'Enable read mode floating menu', index: 0},
+					readmode: {enable: false, label: 'Enable reading mode', index: 1},
+					hidemanga: {enable: false, label: 'Hide full favorites', index: 2},
+					offline: {enable: false, label: 'Offline favorites covers', index: 3},
+					date: {enable: false, label: 'Show date in list', index: 4 },
+				},
+			},
 		}
 	},
 
