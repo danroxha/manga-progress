@@ -9,6 +9,13 @@
     "storage",
     "https://cdn.jsdelivr.net/npm/vue/dist/vue.js"
    ],
+   "icons": {
+     "16": "public/assets/img/book-icon-16.png",
+     "24": "public/assets/img/book-icon-24.png",
+     "32": "public/assets/img/book-icon-32.png",
+     "48": "public/assets/img/book-icon-48.png",
+     "128": "public/assets/img/book-icon-128.png"
+   },
   "browser_action"	:{
     "default_title": "Manga Progress",
     "default_popup": "public/index.html"
