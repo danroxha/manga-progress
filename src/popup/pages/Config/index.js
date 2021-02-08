@@ -17,20 +17,20 @@ export default {
 				<p>{{ db.statusMemory }} MB / {{ db.statusCapacity }} MB</p>
 			</header>
 			<section>
-						<toogle-switch 
-							v-for='prop in config.switch'
-							styleClass='toogle-style' 
-							@Change='saveConfig' :props='prop'	
-						>
-							<h3> {{ prop.label}} </h3><br/>
-						</toogle-switch>
-						<div>
-							<button @click='exportDB'>Export database</button>
-							<button @click='clearDB'>Clear database</button>
-							<button @click='resetSettings'>Reset settings</button>
-							<button @click='removeFullManga'>Remove full manga</button>
-							<button @click='showAbout'>About</button>
-						</div>
+				<toogle-switch 
+					v-for='prop in config.switch'
+					styleClass='toogle-style' 
+					@Change='saveConfig' :props='prop'	
+				>
+					<h3> {{ prop.label}} </h3>
+				</toogle-switch>
+				<div>
+					<button @click='exportDB'>Export database</button>
+					<button @click='clearDB'>Clear database</button>
+					<button @click='resetSettings'>Reset settings</button>
+					<button @click='removeFullManga'>Remove full manga</button>
+					<button @click='showAbout'>About</button>
+				</div>
 
 			</section>
 			<footer @click='redirect("https://github.com/dannRocha")'>
