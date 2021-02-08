@@ -88,8 +88,22 @@ export default {
 			this.db.statusMemory =  await Storage.memoryUsedDB('megabyte')
 			this.db.statusCapacity = Storage.capacityDB('megabyte')
 			this.db.percent = parseFloat(((this.db.statusMemory * 100) / this.db.statusCapacity).toFixed(2))
-		}
-
+		},
+		
+		sortLabelConfig(){
+			this.config.switch = this.config.switch = Object.keys(this.config.switch)
+				.sort((keyA, keyB) => {
+					
+					if( ( this.config.switch[keyA]?.index ?? this.config.switch[keyA]?.label) > (this.config.switch[keyB]?.index ?? this.config.switch[keyB]?.label)) return 1;
+					if( ( this.config.switch[keyA]?.index ?? this.config.switch[keyA]?.label) < (this.config.switch[keyB]?.index ?? this.config.switch[keyB]?.label)) return -1;
+					
+					return 0;
+				})
+				.reduce((acc, key) => {
+					acc[key] = this.config.switch[key]
+					return acc
+				}, {})
+		},
 	},
 
 	async mounted(){
