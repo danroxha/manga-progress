@@ -62,11 +62,26 @@ export default {
 	methods: {
 
 		saveConfig() {
+			for(let key in this.config.switch) {
+				for(let attr in this.config.switch[key]) {
+					if(attr === 'enable') continue
+					delete this.config.switch[key][attr]
+				}
+			}
+
 			DBConfiguration.saveDB(this.config)
 		},
 
 		async loadConfig() {
-			this.config = await DBConfiguration.loadBD()
+			let configDB = await DBConfiguration.loadBD()
+			for(var key in configDB.switch)
+				this.config.switch[key].enable = configDB.switch[key].enable
+
+			for(var key in configDB) {
+				if(key == 'switch') continue
+				this.config[key] = configDB[key]
+			}
+
 		},
 
 		exportDB() {
