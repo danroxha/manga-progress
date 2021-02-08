@@ -94,9 +94,9 @@ export default {
 		removeFullManga() {
 		},
 
-		async resetSettings() {
+		resetSettings() {
 			DBConfiguration.resetDB()
-			await this.loadConfig()
+			this.loadConfig()
 		},
 
 		showAbout() {
@@ -130,7 +130,8 @@ export default {
 	},
 
 	async mounted(){
-		await this.loadConfig()
-		await this.loadStatusStorage()
+		this.sortLabelConfig()
+		this.loadStatusStorage()
+		this.loadConfig()
 	}
 }
