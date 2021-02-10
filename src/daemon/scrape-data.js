@@ -1,8 +1,8 @@
 const $  = document.querySelector.bind(document)
 const $$ = document.querySelectorAll.bind(document)
+const DB_NAME = 'favorites'
 
 const scrapeData = {
-  db: 'favorites',
   data: {
     title: '', cover: '', address: '', id: '',
     page: '', chapters: '', current: '', progress: '',
@@ -44,19 +44,18 @@ const scrapeData = {
     nodeSpan.setAttribute('id', 'btn-add-manga-progress')
     nodeSpan.innerHTML = '&#x2B50;'
     nodeSpan.addEventListener('click', () => {
-      chrome.storage.local.get([this.db], localDB => {
+      chrome.storage.local.get([DB_NAME], localDB => {
+
+        if(localDB.isEmpty()) localDB[DB_NAME] = {}
         
-        let storage = localDB[this.db]
-
-        if(storage.isEmpty()) storage = {}
-
+        const storage = localDB[DB_NAME]
         if(storage[this.data.hash])
           storage[this.data.hash] = this.updateData(storage[this.data.hash])
         else 
           storage[this.data.hash] = this.data
         
         const db = {}
-        db[this.db] = storage
+        db[DB_NAME] = storage
         chrome.storage.local.set(db)
       }) 
     })
@@ -130,14 +129,14 @@ const scrapeData = {
   },
 
   updateDB() {
-    chrome.storage.local.get([this.db], localDB => {
+    chrome.storage.local.get([DB_NAME], localDB => {
       
-      let storage = localDB[this.db]
+      let storage = localDB[DB_NAME]
 
       if(storage[this.data.hash]){
         storage[this.data.hash] = this.updateData(storage[this.data.hash])
         const db = {}
-        db[this.db] = storage
+        db[DB_NAME] = storage
         chrome.storage.local.set(db)
       }
     })
