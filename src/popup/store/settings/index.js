@@ -26,7 +26,9 @@ export default {
     },
   
     mutations: {
-      async loadConfiguration(state){
+      async loadConfiguration(state) {
+        if(! await Storage.hasDB(DB_NAME))
+          await Storage.createDB(DB_NAME, state.display) 
         state.display = await Storage.loadDB(DB_NAME)
       },
   
