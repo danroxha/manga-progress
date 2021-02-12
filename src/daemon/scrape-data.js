@@ -41,7 +41,7 @@ const scrapeData = {
     nodeAnchor.href = this.data.address
     nodeAnchor.textContent = this.data.title
     
-    nodeSpan.setAttribute('id', 'btn-add-manga-progress')
+    nodeSpan.setAttribute('id', 'btn-add-favorite')
     nodeSpan.innerHTML = '&#x2B50;'
     nodeSpan.addEventListener('click', () => {
       chrome.storage.local.get([DB_NAME], localDB => {

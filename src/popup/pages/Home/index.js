@@ -1,6 +1,6 @@
-import { DBMangas } from '../../store/index.js'
+import { DBFavorite } from '../../store/index.js'
 import { 
-  CardInfo, CardManga, Container, ContainerList,
+  CardInfo, CardFavorite, Container, ContainerList,
   FilterTool, TrashIcon, HeaderHome,
  } from '../../component/index.js'
 
@@ -8,7 +8,7 @@ import {
 export default {
   name: 'home-page',
   components: {
-    CardInfo, CardManga, Container, ContainerList,
+    CardInfo, CardFavorite, Container, ContainerList,
     FilterTool, TrashIcon, HeaderHome,
   },
   template: `
@@ -28,15 +28,15 @@ export default {
       />  
   
       <container-list>
-        <card-manga
+        <card-favorite
           draggable 
-          v-for='manga in filteredList'
+          v-for='favorite in filteredList'
           @DragStart='dragCard($event)'
           @DragEnd='dropCard'
-          @MouseMove='enableCardInformation([$event, manga])'
+          @MouseMove='enableCardInformation([$event, favorite])'
           @MouseOut='disableCardInformation'
-          :manga="manga"
-          :key='manga.hash'
+          :favorite="favorite"
+          :key='favorite.hash'
         />
         <card-info />
       </container-list>
@@ -64,7 +64,7 @@ export default {
       }
   
       this.filteredList = this.raw.
-        filter(manga => manga.title.toLowerCase().match(this.search.filter.toLowerCase()))
+        filter(favorite => favorite.title.toLowerCase().match(this.search.filter.toLowerCase()))
     },
     
     dragCard(event) {
@@ -183,9 +183,9 @@ export default {
     },
 
     async configData() {
-      let { mangas }  = await DBMangas.loadBD()
+      let { favorites }  = await DBFavorite.loadBD()
       
-      this.raw = mangas
+      this.raw = favorites
       this.filteredList = this.raw
       this.loadCovers()
       this.organizeList()
@@ -197,7 +197,7 @@ export default {
       if( !this.removing.over )
         return
       
-      await DBMangas.removeByID(this.removing.component.id)
+      await DBFavorite.removeByID(this.removing.component.id)
       
       this.filteredList = this.filteredList.filter(card => card.hash != this.removing.component.id)
       this.raw = this.raw.filter(card => card.hash != this.removing.component.id)
@@ -231,7 +231,7 @@ export default {
     },
   },
   
-  async mounted(){ 
+  async mounted() { 
     await this.loadConfiguration()
     await this.configData()
   }

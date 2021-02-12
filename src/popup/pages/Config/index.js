@@ -30,7 +30,7 @@ export default {
           <button @click='exportDB'>Export database</button>
           <button @click='clearDB'>Clear database</button>
           <button @click='resetSettings'>Reset settings</button>
-          <button @click='removeFullManga'>Remove full manga</button>
+          <button @click='removeFullFavorite'>Remove full favorite</button>
           <button @click='showAbout'>About</button>
         </div>
 
@@ -53,7 +53,7 @@ export default {
         switch: {
           floatmenu: { enable: false, label: 'Enable read mode floating menu', index: 0 },
           readmode: { enable: false, label: 'Enable reading mode', index: 1 },
-          hidemanga: { enable: false, label: 'Hide full favorites', index: 2 },
+          hidefavorite: { enable: false, label: 'Hide full favorites', index: 2 },
           offline: { enable: false, label: 'Offline favorites covers', index: 3 },
           date: { enable: false, label: 'Show date in list', index: 4 },
         },
@@ -93,7 +93,7 @@ export default {
     async clearDB() {
     },
 
-    removeFullManga() {
+    removeFullFavorite() {
     },
 
     resetSettings() {

@@ -5,19 +5,15 @@
 	
 }
 
-#title-manga-progress {
+#title-favorite-progress {
     display: flex;
     justify-content: space-between;
 }
 
-#btn-add-manga-progress {
+#btn-add-favorite {
 	z-index: 9999;
 	cursor: pointer;
 	font-size: 30pt;
-}
-
-#header-manga-progress {
-	
 }
 
 .card-container {

@@ -14,6 +14,6 @@ export { default as ToogleSwitch } from './ToggleSwitch/index.js'
 export { default as TrashIcon } from './TrashIcon/index.js'
 
 // module component
-export { default as CardManga } from './CardManga/index.js'
+export { default as CardFavorite } from './CardFavorite/index.js'
 export { default as ContainerList } from './ContainerList/index.js'
 export { default as HeaderHome } from './HeaderHome/index.js'

@@ -1,25 +1,25 @@
 export default {
   name: "loading-bar",
-  props: ['manga'],
+  props: ['favorite'],
   template: `
     <div class='loading-bar'>
-      <div class='percentage' :style="{'width': manga.progress + '%'}"></div>
+      <div class='percentage' :style="{'width': favorite.progress + '%'}"></div>
       <span>
-      {{ messageBar(manga) }}
+      {{ messageBar(favorite) }}
       </span>
     </div>
   `,
 
   methods: {
-    messageBar(manga) {
+    messageBar(favorite) {
       let message = ''
 
-      if (manga.status === 'Ativo' && manga.progress === 100.0)
+      if (favorite.status === 'Ativo' && favorite.progress === 100.0)
         message = `Check new chapters`
-      else if (!manga.chapters)
+      else if (!favorite.chapters)
         message = `Click here for update`
       else
-        message = `Complete ${manga.progress}%`
+        message = `Complete ${favorite.progress}%`
 
       return message
     },

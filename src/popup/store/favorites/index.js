@@ -3,17 +3,16 @@ import Storage from '../storage/Storage.js'
 const DB_NAME = 'favorites'
 
 export default {
-
   
   async loadBD() {
     
     let raw =  await Storage.loadDB(DB_NAME)
-    let mangas = this.parseManga(raw).map(this.setProperty)
+    let favorites = this.parseFavorites(raw).map(this.setProperty)
     
-    return ( { mangas, raw })
+    return ( { favorites, raw })
   },
 
-  async removeByID(id){
+  async removeByID(id) {
     
     let { raw } = await this.loadBD()
     
@@ -24,7 +23,7 @@ export default {
 
   },
 
-  parseManga(raw) {
+  parseFavorites(raw) {
     
     let parse = []
 
@@ -34,13 +33,13 @@ export default {
     return parse
   },
 
-  setProperty(manga){
+  setProperty(favorite) {
     return {
-      ...manga,
+      ...favorite,
       imageSource: null,
       imageLoading: null,
       loading: true,
-      progress: parseFloat((100 * manga.current / manga.chapters).toFixed(2))
+      progress: parseFloat((100 * favorite.current / favorite.chapters).toFixed(2))
     }
   },
 }

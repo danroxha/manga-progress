@@ -8,7 +8,7 @@ export default {
     switch: {
       readmode: {enable: true},
       floatmenu: {enable: true},
-      hidemanga: {enable: false},
+      hidefavorite: {enable: false},
       offline: {enable: false },
       date: {enable: false},
     },
@@ -38,8 +38,4 @@ export default {
       return await Storage.loadDB(DB_NAME)
   },
 
-   /**
-    * 
-    * @param {object|configuration} config 
-    */
 }
