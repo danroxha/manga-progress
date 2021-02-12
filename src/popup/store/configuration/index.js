@@ -15,7 +15,13 @@ export default {
   },
 
   async createDB() {
-    await Storage.createDB(DB_NAME, {...this.config})
+    try {
+      await Storage.createDB(DB_NAME, {...this.config})
+    }
+    catch(err) {
+      console.warn('[createDB]: Configuration')
+      console.error(err)
+    }
   },
   
   /**
@@ -31,11 +37,10 @@ export default {
   },
 
   async loadBD() {
-
-    if(! await Storage.hasDB(DB_NAME))
+    if(!await Storage.hasDB(DB_NAME)) {
       await this.createDB()
-
-      return await Storage.loadDB(DB_NAME)
+    }
+    return await Storage.loadDB(DB_NAME)
   },
 
 }

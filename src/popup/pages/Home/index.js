@@ -184,11 +184,13 @@ export default {
 
     async configData() {
       let { favorites }  = await DBFavorite.loadBD()
-      
       this.raw = favorites
       this.filteredList = this.raw
-      this.loadCovers()
-      this.organizeList()
+      
+      if(this.raw.length) {
+        this.loadCovers()
+        this.organizeList()
+      }
       
     },
     

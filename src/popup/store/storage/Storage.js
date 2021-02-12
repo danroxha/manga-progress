@@ -8,15 +8,19 @@ export default {
     return new Promise((resolve, reject) => {
       chrome.storage.local.get([database], db => {
         let size = 0
-        for(let _ in db) {
-          size++;
-
-          if(size > 0) break;
+        if(db instanceof Object) { 
+          for(let _ in db) {
+            size++
+            if(size > 0) break
+          }
         }
 
-        if(size) resolve(true)
-
-        resolve(false)
+        if(db[database] && size) 
+          resolve(true)
+        else {
+          chrome.storage.local.remove([database])
+          resolve(false)
+        }
       })
     })    
   },
@@ -27,11 +31,20 @@ export default {
    * @param {object} data any data
    */
   createDB(database, data) {
+    
+    if(!data || !database ) throw new Error(`[createDB]: 'database name' or 'data' underfined `)
+    if(data instanceof Object) {
+      let size = 0
+      for(let _ in data) {
+        size++;
+        if(size > 0) break;
+      }
 
-    if(!data) data = {}
-
+      if(!size) throw new Error(`[createDB]: database "${database}" data empty`)
+    }
+  
     return new Promise(async(resolve, reject) => {
-      if(this.hasDB(database))
+      if(await this.hasDB(database))
         reject({status: 406, msg: `Error:[createDB] has database name '${database}'`})
 
       await this.setDB(database, data, true)
@@ -47,13 +60,14 @@ export default {
    */
   loadDB(database) {
 
-    if(!database) throw new Error('database name undefined')
-    if(typeof database !== 'string') throw new Error('database name should string')
+    if(!database) throw new Error('[loadDB]: database name undefined')
+    if(typeof database !== 'string') throw new Error('[loadDB]: database name should string')
 
     return new Promise((resolve, reject) => {
+
       chrome.storage.local.get([database], async db => {
-        if(! await this.hasDB(database))
-          reject('database not exist')
+        if(!await this.hasDB(database))
+          reject(`[loadDB]: database not exist "${database}"`)
         resolve(db[database])
       })
     })
@@ -67,12 +81,13 @@ export default {
    */
   setDB(database, data, force = false) {
     
-    if(!database) throw new Error('database name undefined')
-    if(!data) throw new Error(`data for ${database} undefined`)
-    if(typeof database !== 'string') throw new Error('database name should string')
-    if(this.hasDB(database) && !force) throw new Error('has database name')
+    if(!database) throw new Error('[setDB]: database name undefined')
+    if(!data) throw new Error(`[setDB]: data for ${database} undefined`)
+    if(typeof database !== 'string') throw new Error('[setDB]: database name should string')
     
-    return new Promise((resolve, _) => {
+    return new Promise(async(resolve, reject) => {
+      if(await this.hasDB(database) && !force) 
+        reject(`[setBD]: has database name "${database}"`)
       
       let db = {}
       db[database] = data
@@ -89,15 +104,15 @@ export default {
    */
   removeDB(database) {
     
-    if(!database) throw new Error('database name undefined')
+    if(!database) throw new Error('[removeDB]: database name undefined')
 
-    return new Promise((resolve, reject) => {
+    return new Promise(async(resolve, reject) => {
 
-      if(!this.hasDB(database))
-        reject('database not exist')
+      if(! await this.hasDB(database))
+        reject('[removeDB]: database not exist')
 
       chrome.storage.local.remove([database], () => {
-        resolve({status: 200})
+        resolve({status: 200, msg: `[removeDB]: database "${database}" removed`})
       })    
     })
   },

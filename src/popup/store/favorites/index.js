@@ -5,7 +5,14 @@ const DB_NAME = 'favorites'
 export default {
   
   async loadBD() {
-    
+
+    if(!await Storage.hasDB(DB_NAME)) {
+      return ({
+        favorites: [],
+        raw: {},
+      })
+    }
+
     let raw =  await Storage.loadDB(DB_NAME)
     let favorites = this.parseFavorites(raw).map(this.setProperty)
     
