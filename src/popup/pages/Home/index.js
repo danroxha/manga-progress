@@ -30,7 +30,7 @@ export default {
       <container-list>
         <card-manga
           draggable 
-          v-for='manga in list'
+          v-for='manga in filteredList'
           @DragStart='dragCard($event)'
           @DragEnd='dropCard'
           @MouseMove='enableCardInformation([$event, manga])'
@@ -44,7 +44,7 @@ export default {
   `,
   
   data: () => ({
-    list: [],
+    filteredList: [],
     raw: [],
     currentManga: {},
   }),
@@ -52,37 +52,30 @@ export default {
   methods: {
    
     ...Vuex.mapMutations( ['loadConfiguration']),
-    ...Vuex.mapMutations( [ 'enableCardInformation', 'disableCardInformation']),
-    ...Vuex.mapMutations( [ 'dragstart', 'dragend', 'dragover', 'dragleave']),
-    ...Vuex.mapMutations( [ 'enableFieldFilter', 'disableFieldFilter']),
+    ...Vuex.mapMutations( ['enableCardInformation', 'disableCardInformation']),
+    ...Vuex.mapMutations( ['dragstart', 'dragend', 'dragover', 'dragleave']),
+    ...Vuex.mapMutations( ['enableFieldFilter', 'disableFieldFilter']),
 
     applyFilter() {
       
-      if(!this.search.enable || !this.search.filter.trim() ) {
-        
-        this.organizeList()
-        this.list = this.raw
-
+      if(!this.search.enable || !this.search.filter?.trim() ) {
+        this.filteredList = this.raw
         return
       }
-
-      this.list = this.raw.
-        filter(manga => manga.title.toLowerCase().match(this.search.filter.toLowerCase())) 
-
-      this.organizeList()
+  
+      this.filteredList = this.raw.
+        filter(manga => manga.title.toLowerCase().match(this.search.filter.toLowerCase()))
     },
     
-    dragCard(event){
+    dragCard(event) {
       this.dragstart(event)
       this.disableCardInformation()
       this.disableFieldFilter()
-      console.log('drag start');
     },
 
-    dropCard(){
+    dropCard() {
       this.enableFieldFilter()
       this.dragend()
-      console.log('drop end');
     },
 
     organizeList() {
@@ -93,17 +86,21 @@ export default {
 
       switch(this.displaySetting.ordination.enable){
         case ALPHABET:
-          if(!this.displaySetting.ordination.select[this.displaySetting.ordination.enable])
-            this.list = _sort(this.list, TITLE)
-          else 
-            this.list = _sort(this.list, TITLE).reverse()
+          if(!this.displaySetting.ordination.select[this.displaySetting.ordination.enable]) {
+            this.raw = _sort(this.raw, TITLE)
+          }
+          else {
+            this.raw = _sort(this.raw, TITLE).reverse()
+          }
 
           break
         case PROGRESS:
-          if(!this.displaySetting.ordination.select[this.displaySetting.ordination.enable])
-            this.list = _sort(this.list, PROGRESS).reverse()
-          else
-            this.list = _sort(this.list, PROGRESS)
+          if(!this.displaySetting.ordination.select[this.displaySetting.ordination.enable]) {
+            this.raw = _sort(this.raw, PROGRESS).reverse()
+          }
+          else {
+            this.raw = _sort(this.raw, PROGRESS)
+          }
       
           break
       }
@@ -122,8 +119,8 @@ export default {
           if (valueA > valueB) return 1
           if (valueA < valueB) return -1
           
-          return 0;
-        });
+          return 0
+        })
       }
     },
     
@@ -189,20 +186,20 @@ export default {
       let { mangas }  = await DBMangas.loadBD()
       
       this.raw = mangas
-      this.list = this.raw
+      this.filteredList = this.raw
       this.loadCovers()
       this.organizeList()
       
     },
     
-    async removeCard(){
-      console.log('remove :' + this.removing.component.id);
+    async removeCard() {
+  
       if( !this.removing.over )
         return
       
       await DBMangas.removeByID(this.removing.component.id)
       
-      this.list = this.list.filter(card => card.hash != this.removing.component.id)
+      this.filteredList = this.filteredList.filter(card => card.hash != this.removing.component.id)
       this.raw = this.raw.filter(card => card.hash != this.removing.component.id)
   
     },
@@ -228,15 +225,14 @@ export default {
   },
 
   watch: {
-    ordination(){
+    ordination() {
       this.organizeList()
+      this.applyFilter()
     },
   },
   
-  async mounted(){
-    
+  async mounted(){ 
     await this.loadConfiguration()
     await this.configData()
-    
   }
 }
