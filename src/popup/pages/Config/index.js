@@ -66,8 +66,8 @@ export default {
     saveConfig() {
       for (let key in this.config.switch) {
         for (let attr in this.config.switch[key]) {
-          if (attr === 'enable') continue
-          delete this.config.switch[key][attr]
+          if (attr === 'label' || attr === 'index')
+            delete this.config.switch[key][attr]
         }
       }
 

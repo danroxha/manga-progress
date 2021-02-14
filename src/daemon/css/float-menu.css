@@ -1,0 +1,231 @@
+* {
+  --_0-color: #000000;
+  --_1-color: #FFFFFF;
+  --_2-color: #232323;
+  --_3-color: #56e0ff;
+  --_2_1-color: #545252;
+  --_3_1-color: #56fffc;
+  --_3_2-color: #0d6966;
+}
+
+#container-menu {
+  user-select: none;
+  position: fixed;
+  left: 50px;
+  top: 80px;
+}
+
+#float-menu {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 20px;
+  border: 2px solid #000;
+  max-width: 190px;
+  padding: 40px 10px;
+  position: absolute;
+  background-color: var(--_0-color);
+  color: var(--_1-color);
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+}
+
+#indicator {
+  -ms-user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  -khtml-user-select: none;
+  user-select: none;
+  cursor: grab;
+  position: absolute;
+  color: var(--_1-color);
+  font-size: 16pt;
+  font-family: Arial, Helvetica, sans-serif;
+  font-style: italic;
+  font-weight: bold;
+
+  padding: 20px;
+  width: 20px;
+  height: 20px;
+  background-color: #000;
+  border-radius: 500%;
+  left: -35px;
+  top: -35px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  filter:drop-shadow(0px 2px 5px gray);
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+}
+#indicator .sub-title {
+  font-size: 8pt;
+}
+
+#indicator:hover+#float-menu {
+  display: flex;
+}
+.float-menu-home {
+  font-size: 20pt;
+  color: var(--_1-color)
+}
+
+#float-menu:hover {
+  display: flex;
+}
+
+.help-float-menu {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  font-size: 16pt;
+  right: 10px;
+  top: 5px;
+  background-color: var(--_2_1-color);
+  border-radius: 100%;
+  width: 6px;
+  height: 6px;
+  padding: 10px;
+
+}
+
+.help-float-menu:hover+ div {
+  visibility: visible;
+}
+
+.help-tutotial {
+  cursor: help;
+}
+.help-tutotial button {
+  display: inline;
+  padding: 0;
+  background-color: var(--_2_1-color);
+  width: 30px
+}
+
+.help-tutotial div {
+  text-indent: 20px;
+  text-align: justify;
+  background: var(--_3-color);
+  visibility: hidden;
+  border-radius: 20px;
+  max-width: 240px;
+  padding: 10px;
+  position: absolute;
+  top: -55px;
+  right: -250px;
+}
+
+.help-tutotial div:hover {
+  visibility: visible;
+}
+
+.sliders {
+  display: flex;
+  flex-direction: column;
+}
+.sliders .label-control {
+  margin-top: 5px;
+  padding: 0 20px;
+  display: flex;
+  justify-content: space-between;
+}
+.sliders .control-slide {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sliders input {
+  -webkit-appearance: none;
+  margin: 0;
+  line-height: 20px;
+  height: 3px;
+  border-radius: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  appearance: none;
+  background: var(--_1-color);
+  outline: none;
+  transition: opacity .2s;
+}
+.sliders input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 15px; 
+  height: 15px; /* Slider handle height */
+  border-radius: 100%;
+  background: var(--_3_1-color); /* Green background */
+  cursor: pointer; /* Cursor on hover */
+}
+
+.sliders button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px;
+  width: 20px;
+  height: 20px;
+}
+
+.control-slide {
+  display: flex;
+}
+
+.control-slide button {
+  /* border: none; */
+  outline: none;
+  cursor: pointer;
+}
+
+.buttons {
+  margin-top: 15px;
+  width: 70%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.buttons div {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+.buttons button {
+  width: 49%;
+  padding: 5px;
+  border: 1px solid;
+  outline: none;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 12pt;
+  font-weight: 800;
+}
+button {
+  color: var(--_1-color);
+  font-weight: bold;
+  border-radius: 10px;
+  background-color: var(--_3_2-color-color);
+}
+
+button:active {
+  background-color: var(--_3_1-color);
+}
+
+.buttons select {
+  appearance: none;
+  background-color: var(--_0-color);
+  border-radius: 10px;
+  outline: none;
+  width: 100%;
+  margin-top: 10px;
+  padding: 5px;
+  cursor: pointer;
+  color: #FFFFFF;
+}

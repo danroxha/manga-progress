@@ -7,7 +7,12 @@ export default {
     dbname: 'configuration',
     switch: {
       readmode: {enable: true},
-      floatmenu: {enable: true},
+      floatmenu: {
+        enable: true,
+        zoom: 100,
+        scroll: 0,
+        position: {x: 50, y: 80},
+      },
       hidefavorite: {enable: false},
       offline: {enable: false },
       date: {enable: false},
