@@ -30,8 +30,17 @@ const readMode = {
     })
   },
 
+  getPages() {
+    return Array.from(document.getElementsByTagName('img'))
+      .filter(img => 
+        img?.id.match(/(img.+\d+)|(pag.+\d+)/)  // mangahost?.com | centraldemangas.online
+        ?? img?.alt.match(/Page.+\d+/)          // unionmanga.xyz/
+      )
+
+  },
+
   clearPage() {
-    const pages = Array.from(document.getElementsByTagName('img'))
+    const pages = this.getPages() 
 
     const nodeSection = document.createElement('section')
     const nodeTitle   = document.createElement('title')
