@@ -164,7 +164,7 @@ const readMode = {
               </button>
             </div>
             <select id='selectChapter' name='chapters'>
-              <option value='${currentChapter}' selected>Chapters ${currentChapter}</option>
+              <option value='${currentChapter}' selected>Chapter ${currentChapter}</option>
               ${
                 chapters.map(chapter =>
                 `<option value='${chapter}'> Chapter ${chapter}</option>`
