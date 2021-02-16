@@ -7,7 +7,7 @@ export default {
         v-model='search.filter'
         @input.prevent='$emit("Input")'
         type='text'
-        placeholder='Filter'
+        placeholder='${chrome.i18n.getMessage("placeholderFilter")}'
         autofocus
       />  
     </section>

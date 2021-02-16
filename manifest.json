@@ -2,9 +2,10 @@
   "manifest_version": 2,
   "name": "Manga Progress",
   "version": "0.0.2",
-  "description": "Extension assists in the organization of previously read chapters",
+  "description": "__MSG_extensionDescription__",
   "author": "Daniel Rocha",
   "homepage_url": "https://github.com/dannRocha/manga-progress",
+  "default_locale": "en",
   "permissions": [
     "storage",
     "unlimitedStorage"

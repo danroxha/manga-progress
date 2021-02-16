@@ -110,10 +110,9 @@ const readMode = {
           <div class='help-tutotial'>
             <span class='help-float-menu'>?</span>
             <div>
-              <p>Move the menu by dragging the icon with the chapter number.</p>
+              <p>${chrome.i18n.getMessage('textReadModeHelp1P')}</p>
               <p>
-                Use the arrows <span><button>&#8592;</button></span> and <span><button>&#8594;</button></span>  to change the chapters, 
-                and the keys for <span><button>&#8593;</button></span> and <span><button>&#8595;</button></span> to navigate between pages.
+                ${chrome.i18n.getMessage('textReadModeHelp2P')}
               </p>
             </div>
           </div>
@@ -132,7 +131,7 @@ const readMode = {
             </div>
             <div>
               <div class='label-control'>
-                <label>Scroll</label>
+                <label>${chrome.i18n.getMessage('textReadModeScroll')}</label>
                 <span>2x</span>
               </div>
               <div class='control-slide'>
@@ -164,10 +163,10 @@ const readMode = {
               </button>
             </div>
             <select id='selectChapter' name='chapters'>
-              <option value='${currentChapter}' selected>Chapter ${currentChapter}</option>
+              <option value='${currentChapter}' selected>${chrome.i18n.getMessage('textReadModeChapter')} ${currentChapter}</option>
               ${
                 chapters.map(chapter =>
-                `<option value='${chapter}'> Chapter ${chapter}</option>`
+                `<option value='${chapter}'> ${chrome.i18n.getMessage('textReadModeChapter')} ${chapter}</option>`
                 ).join('')
               }
             </select>

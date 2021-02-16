@@ -1,0 +1,102 @@
+{
+  "extensionDescription": {
+    "message": "Extension assists in the organization of previously read chapters.",
+    "description": "Description of the extension"
+  },
+  "placeholderFilter": {
+  	"message": "Filter",
+  	"description": "Placeholder filter"
+  },
+  "messageLoadingBarCheck": {
+    "message": "Check new chapters",
+    "description": "Message loading bar check new chapters"
+  },
+  "messageLoadingBarClickUpdate": {
+    "message": "Click here for update",
+    "description": "Message loading bar click here for update"
+  },
+  "messageLoadingBarComplete": {
+    "message": "Complete",
+    "description": "Message loading bar click here for update"
+  },
+  "messageCardInfoChapters": {
+  	"message": "Chapters",
+  	"description": "Label of CardInfo about Chapters"
+  },
+  "messageCardInfoCurrent": {
+  	"message": "Current",
+  	"description": "Label of CardInfo about Current Chapter"
+  },
+  "messageCardInfoStatus": {
+  	"message": "Status",
+  	"description": "Label of CardInfo about Favorite Status"
+  },
+  "messageStatus": {
+  	"message": "Active",
+  	"description": "Status text "
+  },
+  "messageConfigExportDB": {
+    "message": "Export database",
+    "description": ""
+  },
+  "messageConfigClearDB": {
+    "message": "Clear database",
+    "description": ""
+  },
+  "messageConfigResetSet": {
+    "message": "Reset settings",
+    "description": ""
+  },
+  "messageConfigRemoveFullFav": {
+    "message": "Remove full favorite",
+    "description": ""
+  },
+  "messageConfigAbout": {
+    "message": "About",
+    "description": ""
+  },
+  "messageConfigStorage": {
+    "message": "Storage",
+    "description": ""
+   },
+  "labelToogleFloatMenu": {
+    "message": "Enable read mode floating menu",
+    "description": ""
+  },
+  "labelToogleReadMode": {
+    "message": "Enable reading mode",
+    "description": ""
+  },
+  "labelToogleHideFavorite": {
+    "message": "Hide full favorites",
+    "description": ""
+  },
+  "labelToogleOffline": {
+    "message": "Offline favorites covers",
+    "description": ""
+  },
+ "labelToogleDate": {
+    "message": "Show date in list",
+    "description": ""
+  },
+  "messageConfigFooter": {
+    "message": "By Daniel Rocha",
+    "description": ""
+  },
+  "textReadModeScroll": {
+    "message": "Scroll",
+    "description": ""
+  },
+  "textReadModeChapter": {
+    "message": "Chapter",
+    "description": ""
+  },
+  "textReadModeHelp1P": {
+    "message": "Move the menu by dragging the icon with the chapter number.",
+    "description": ""
+  },
+  "textReadModeHelp2P": {
+    "message": "Use the arrows <span><button>&#8592;</button></span> and <span><button>&#8594;</button></span>  to change the chapters, and the keys for <span><button>&#8593;</button></span> and <span><button>&#8595;</button></span> to navigate between pages.",
+    "description": ""
+  }
+}

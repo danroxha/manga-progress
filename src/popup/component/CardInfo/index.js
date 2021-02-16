@@ -8,11 +8,11 @@ export default {
     >
         <dt v-if='displaySetting.modes.select == "grid"'>Title</dt>
         <dd v-if='displaySetting.modes.select == "grid"'>{{cardInformation.data?.title}}</dd>
-        <dt>Chapters</dt>
+        <dt>${chrome.i18n.getMessage('messageCardInfoChapters')}</dt>
         <dd>{{cardInformation.data?.chapters ?? 9999}}</dd>
-        <dt>Current</dt>
+        <dt>${chrome.i18n.getMessage('messageCardInfoCurrent')}</dt>
         <dd>{{cardInformation.data?.current ?? 9999}}</dd>
-        <dt>Status</dt>
+        <dt>${chrome.i18n.getMessage('messageCardInfoStatus')}</dt>
         <dd>{{cardInformation.data?.status}}</dd>
     </dl>
   `,

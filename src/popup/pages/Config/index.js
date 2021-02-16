@@ -11,7 +11,7 @@ export default {
       <header class='header-config'>
         <div>
           <router-link to="/"><arrow-back-icon/></router-link>
-          <h2>Storage</h2>
+          <h2>${chrome.i18n.getMessage('messageConfigStorage')}</h2>
         </div>
         <progress class='progress-store' id="file" :value='db.percent' max="100"></progress>
         <p>{{ db.statusMemory }} MB / {{ db.statusCapacity }} MB</p>
@@ -27,16 +27,16 @@ export default {
           <h3> {{ prop.label}} </h3>
         </toogle-switch>
         <div>
-          <button @click='exportDB'>Export database</button>
-          <button @click='clearDB'>Clear database</button>
-          <button @click='resetSettings'>Reset settings</button>
-          <button @click='removeFullFavorite'>Remove full favorite</button>
-          <button @click='showAbout'>About</button>
+          <button @click='exportDB'>${chrome.i18n.getMessage('messageConfigExportDB')}</button>
+          <button @click='clearDB'>${chrome.i18n.getMessage('messageConfigClearDB')}</button>
+          <button @click='resetSettings'>${chrome.i18n.getMessage('messageConfigResetSet')}</button>
+          <button @click='removeFullFavorite'>${chrome.i18n.getMessage('messageConfigRemoveFullFav')}</button>
+          <button @click='showAbout'>${chrome.i18n.getMessage('messageConfigAbout')}</button>
         </div>
 
       </section>
       <footer @click='redirect'>
-        By Daniel Rocha &nbsp;
+        ${chrome.i18n.getMessage('messageConfigFooter')} &nbsp;
         <github-icon/>
       </footer>
     </container>
@@ -51,11 +51,11 @@ export default {
       },
       config: {
         switch: {
-          floatmenu: { enable: false, label: 'Enable read mode floating menu', index: 0 },
-          readmode: { enable: false, label: 'Enable reading mode', index: 1 },
-          hidefavorite: { enable: false, label: 'Hide full favorites', index: 2 },
-          offline: { enable: false, label: 'Offline favorites covers', index: 3 },
-          date: { enable: false, label: 'Show date in list', index: 4 },
+          floatmenu: { enable: false, label: `${chrome.i18n.getMessage('labelToogleFloatMenu')}`, index: 0 },
+          readmode: { enable: false, label: `${chrome.i18n.getMessage('labelToogleReadMode')}`, index: 1 },
+          hidefavorite: { enable: false, label: `${chrome.i18n.getMessage('labelToogleHideFavorite')}`, index: 2 },
+          offline: { enable: false, label: `${chrome.i18n.getMessage('labelToogleOffline')}`, index: 3 },
+          date: { enable: false, label: `${chrome.i18n.getMessage('labelToogleDate')}`, index: 4 },
         },
       },
     }
