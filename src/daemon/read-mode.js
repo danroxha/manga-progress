@@ -30,11 +30,14 @@ const readMode = {
     this.clearPage()
     
     let configuration = await this.loadConfig()
+   
     this.config = configuration?.switch?.floatmenu ?? defaultConfiguration.switch.floatmenu
   
     if(this.config.enable) {
       this.createFloatMenu()
       this.handlePostionFloatMenu()
+      this.setZoom()
+      this.setScroll()
     }    
   },
   
@@ -204,6 +207,10 @@ const readMode = {
     labelScroll.innerText = `${this.config.scroll}x`
 
     document.querySelectorAll('.slider').forEach(input => {
+      
+      if(input.name === 'zoom') input.value = this.config.zoom
+      if(input.name === 'scroll') input.value = this.config.scroll
+      
       input.addEventListener('input',  e => {
         e.preventDefault()
         
@@ -214,12 +221,14 @@ const readMode = {
             this.config.zoom = parseInt(e.target.value)
             labelZoom.innerText = `${this.config.zoom}%`
             this.setZoom()
+            this.updateConfigDB()
             break;
           }
           case 'scroll': {
             this.config.scroll = parseFloat(e.target.value)
             labelScroll.innerText = `${this.config.scroll}x`
             this.setScroll()
+            this.updateConfigDB()
             break;
           }
         }
@@ -329,7 +338,8 @@ chrome.storage.local.get([readMode.db], localDB => {
     }
   }
   
-  if(!size) {
+  if(!size || storage?.switch?.floatmenu?.scroll === undefined
+    || storage?.switch?.floatmenu?.zoom === undefined) {
     let db = {}
     db[defaultConfiguration.dbname] = defaultConfiguration
     chrome.storage.local.set(db, () => {
@@ -337,8 +347,6 @@ chrome.storage.local.get([readMode.db], localDB => {
     })
     storage = defaultConfiguration
   }
-
-  defaultConfiguration = storage
 
   if(storage?.switch.readmode.enable) {
     if(readMode.canEnable())
