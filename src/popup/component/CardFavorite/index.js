@@ -25,9 +25,9 @@ export default {
         <header>
         
           <h2>{{ favorite?.title }}</h2>
-          <span
-            @click.prevent='redirectCurrentChapter($event, favorite)'
-          > Go </span>
+          <span @click.prevent='redirectCurrentChapter($event, favorite)'> 
+            ${chrome.i18n.getMessage('messageCardFavoriteButtonGo')}
+          </span>
         </header>
         <loading-bar :favorite='favorite' />
       </section>
@@ -43,7 +43,7 @@ export default {
             <p>{{
               (favorite.progress !== Infinity) 
               ? favorite.progress + "%"
-              : "Click" 
+              : '${chrome.i18n.getMessage('messageCardFavoriteGridClick')}'
             }}</p>
         </figure>
         <circle-progress 

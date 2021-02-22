@@ -19,6 +19,18 @@
     "message": "Complete",
     "description": "Message loading bar click here for update"
   },
+  "messageLoadingBarProgress": {
+    "message": "Progress",
+    "description": ""
+  },
+  "messageCardFavoriteButtonGo": {
+  	"message": "Go",
+  	"description": ""
+  },
+  "messageCardFavoriteGridClick": {
+    "message": "Click",
+    "description": ""
+  },
   "messageCardInfoChapters": {
   	"message": "Chapters",
   	"description": "Label of CardInfo about Chapters"

@@ -16,10 +16,12 @@ export default {
 
       if (favorite.status === 'Ativo' && favorite.progress === 100.0)
         message = chrome.i18n.getMessage('messageLoadingBarCheck')
+      else if (favorite.status === 'Ativo' && favorite.progress < 100.0)
+      	message = `${chrome.i18n.getMessage('messageLoadingBarProgress')} ${favorite.progress}%`
       else if (!favorite.chapters)
         message = chrome.i18n.getMessage('messageLoadingBarClickUpdate')
       else
-      	message = `${chrome.i18n.getMessage('messageLoadingBarComplete')} ${favorite.progress}%`
+      	message = chrome.i18n.getMessage('messageLoadingBarComplete')
 
       return message
     },
