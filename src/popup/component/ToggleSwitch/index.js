@@ -11,6 +11,6 @@ export default {
         />
         <span class='slider'></span>
       </div>
-		</label>
+	</label>
   `
 }
