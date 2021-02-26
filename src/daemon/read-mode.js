@@ -106,7 +106,9 @@ const readMode = {
       <section id='container-menu'>
         <span id='indicator' draggable='true'> 
           <span class='sub-title'>ch</span>
-          <span class='currentChapter-text'>${currentChapter}</span>
+          <span class='currentChapter-text'>
+            ${(currentChapter < 10)? String(currentChapter).padStart(2, "0") : currentChapter}
+          </span>
         </span>
         <div id='float-menu'>
           <a class='float-menu-home' href='${url}'>
@@ -171,10 +173,16 @@ const readMode = {
               </button>
             </div>
             <select id='selectChapter' name='chapters'>
-              <option value='${currentChapter}' selected>${chrome.i18n.getMessage('textReadModeChapter')} ${currentChapter}</option>
+              <option value='${currentChapter}' selected>
+                ${chrome.i18n.getMessage('textReadModeChapter')}
+                ${(currentChapter < 10)? String(currentChapter).padStart(2, "0") : currentChapter}
+                </option>
               ${
                 chapters.map(chapter =>
-                `<option value='${chapter}'> ${chrome.i18n.getMessage('textReadModeChapter')} ${chapter}</option>`
+                `<option value='${chapter}'> 
+                  ${chrome.i18n.getMessage('textReadModeChapter')}
+                  ${(chapter < 10) ? String(chapter).padStart(2, "0"): chapter}
+                </option>`
                 ).join('')
               }
             </select>
