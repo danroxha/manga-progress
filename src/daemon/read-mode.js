@@ -23,6 +23,11 @@ const readMode = {
     url:'', title:'', currentChapter: 0, chapters: [], chapters: [],
   },
   config: {},
+  element: {
+    container: null, indicator: null,
+    floatMenu: null, floatHelp: null,
+    floatTutorial: null,
+  },
   
   async enable() {
     
@@ -35,7 +40,7 @@ const readMode = {
   
     if(this.config.enable) {
       this.createFloatMenu()
-      this.handlePostionFloatMenu()
+      this.handlePositionFloatMenu()
       this.setZoom()
       this.setScroll()
     }    
@@ -262,6 +267,35 @@ const readMode = {
 
   },
 
+  setPositionFloatMenu() {
+
+    const { x, y } = this.config.position
+    const { offsetWidth: width, offsetHeight: height } = this.element.floatMenu
+    
+    if((height + y) > window.innerHeight) {
+      this.element.floatMenu.style.top = `
+        ${(this.element.indicator.offsetTop + this.element.indicator.offsetHeight) - (this.element.floatMenu.offsetHeight + this.element.indicator.offsetTop + this.element.indicator.offsetHeight)}px
+      `
+    }
+    else {
+      this.element.floatMenu.style.top = `${this.element.indicator.offsetTop + this.element.indicator.offsetHeight / 2}px`
+    }
+
+    if((width + x) > window.innerWidth) {
+      this.element.floatMenu.style.left = `
+        ${(this.element.indicator.offsetLeft + this.element.indicator.offsetWidth) - (this.element.floatMenu.offsetWidth + this.element.indicator.offsetLeft + this.element.indicator.offsetWidth)}px
+      `
+      this.element.floatHelp.style.left = '10px'
+      this.element.floatTutorial.style.left= '-250px'
+    }
+    else {
+      this.element.floatMenu.style.left = `${this.element.indicator.offsetLeft + this.element.indicator.offsetWidth / 2}px`
+      this.element.floatHelp.style.right = '10px'
+      this.element.floatHelp.style.left = ''
+      this.element.floatTutorial.style.left = ''
+    }
+  },
+
   jumpChapter(chapter) {
     location.assign(`${this.data.url}/${chapter}`)
   },
@@ -286,31 +320,38 @@ const readMode = {
       alert(`First Chapter: ${this.data.currentChapter}`)
   },
 
-  handlePostionFloatMenu() {
+  handlePositionFloatMenu() {
     
-    let container = document.getElementById('container-menu')
-    let indicator = document.getElementById('indicator')
-    let floatMenu = document.getElementById('float-menu')
+    this.element.container = document.getElementById('container-menu')
+    this.element.indicator = document.getElementById('indicator')
+    this.element.floatMenu = document.getElementById('float-menu')
+    this.element.floatHelp = document.querySelector('.help-float-menu')
+    this.element.floatTutorial = document.querySelector('.help-tutotial div')
 
-    container.style.left = `${this.config.position.x}px`
-    container.style.top = `${this.config.position.y}px`
-
-    indicator.ondrag = e => {
+    this.element.container.style.left = `${this.config.position.x}px`
+    this.element.container.style.top = `${this.config.position.y}px`
+    
+    this.setPositionFloatMenu()
+    this.element.indicator.ondrag = e => {
       if (e.clientX > 0 || e.clientY > 0) {
         this.config.position.x = e.clientX
         this.config.position.y = e.clientY
-        floatMenu.style.display = 'none'
-        container.style.left = `${this.config.position.x}px`
-        container.style.top = `${this.config.position.y}px`
+        
+        this.element.container.style.left = `${this.config.position.x}px`
+        this.element.container.style.top = `${this.config.position.y}px`
+
+        this.element.floatMenu.style.visibility = 'hidden';
+        
+        this.setPositionFloatMenu()
       }
     }
 
-    indicator.ondragstart =  ({dataTransfer}) => {
+    this.element.indicator.ondragstart =  ({dataTransfer}) => {
       dataTransfer.setDragImage(new Image(), 0, 0); 
     }
 
-    indicator.ondragend = e => {
-      floatMenu.removeAttribute('style')
+    this.element.indicator.ondragend = e => {
+      this.element.floatMenu.style.visibility = '';
       this.updateConfigDB()
       console.info('[read-mode] save menu position')
     }
