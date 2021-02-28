@@ -14,9 +14,9 @@ export default {
     messageBar(favorite) {
       let message = ''
 
-      if (favorite.status === 'Ativo' && favorite.progress === 100.0)
+      if (favorite.status === 'active' && favorite.progress === 100.0)
         message = chrome.i18n.getMessage('messageLoadingBarCheck')
-      else if (favorite.status === 'Ativo' && favorite.progress < 100.0)
+      else if (favorite.status === 'active' && favorite.progress < 100.0)
       	message = `${chrome.i18n.getMessage('messageLoadingBarProgress')} ${favorite.progress}%`
       else if (!favorite.chapters)
         message = chrome.i18n.getMessage('messageLoadingBarClickUpdate')

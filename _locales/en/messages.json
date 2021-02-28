@@ -43,6 +43,14 @@
   	"message": "Status",
   	"description": "Label of CardInfo about Favorite Status"
   },
+  "messageCardInfoStatusActive": { 
+    "message": "Active",
+  	"description": ""
+  },
+  "messageCardInfoStatusComplete": { 
+    "message": "Complete",
+  	"description": ""
+  },
   "messageStatus": {
   	"message": "Active",
   	"description": "Status text "
@@ -109,6 +117,22 @@
   },
   "textReadModeHelp2P": {
     "message": "Use the arrows <span><button>&#8592;</button></span> and <span><button>&#8594;</button></span>  to change the chapters, and the keys for <span><button>&#8593;</button></span> and <span><button>&#8595;</button></span> to navigate between pages.",
+    "description": ""
+  },
+  "submenuAlphabet": {
+    "message": "alphabet",
+    "description": ""
+  },
+  "submenuProgress": {
+    "message": "progress",
+    "description": ""
+  },
+  "submenuList": {
+    "message": "list",
+    "description": ""
+  },
+  "submenuGrid": {
+    "message": "grid",
     "description": ""
   }
 }

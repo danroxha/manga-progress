@@ -13,10 +13,18 @@ export default {
         <dt>${chrome.i18n.getMessage('messageCardInfoCurrent')}</dt>
         <dd>{{cardInformation.data?.current ?? 9999}}</dd>
         <dt>${chrome.i18n.getMessage('messageCardInfoStatus')}</dt>
-        <dd>{{cardInformation.data?.status}}</dd>
+        <dd>{{languageFormat(cardInformation.data?.status)}}</dd>
     </dl>
   `,
-
+  methods: {
+    languageFormat(text) {
+      switch(text) {
+        case 'active': return chrome.i18n.getMessage('messageCardInfoStatusActive')
+        case 'complete': return chrome.i18n.getMessage('messageCardInfoStatusComplete')
+        default : return  text
+      }
+    }
+  },
   computed: {
     displaySetting() {
       return this.$store.state.settings.display
