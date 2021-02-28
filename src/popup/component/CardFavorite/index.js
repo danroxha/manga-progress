@@ -2,7 +2,7 @@ import { CircleProgress, LoadingBar, LoadingCircle } from '../index.js'
 
 export default {
   name: 'card-favorite',
-  props: ['favorite'],
+  props: ['favorite', 'enableDate'],
   components: {
     CircleProgress, LoadingBar, LoadingCircle
   },
@@ -23,7 +23,9 @@ export default {
         
       >
         <header>
-        
+          <span v-show='enableDate' class='last-update-manga'>
+            {{ dateFormat(favorite?.lastUpdate) }}
+          </span>
           <h2>{{ favorite?.title }}</h2>
           <span @click.prevent='redirectCurrentChapter($event, favorite)'> 
             ${chrome.i18n.getMessage('messageCardFavoriteButtonGo')}
@@ -55,7 +57,9 @@ export default {
   `,
 
   methods: {
-
+    dateFormat(date) {
+      return new Date(date).toLocaleDateString()
+    },
     redirectCurrentChapter(_, favorite) {
 
       if (!favorite.current)

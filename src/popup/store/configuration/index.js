@@ -15,7 +15,7 @@ export default {
       },
       hidefavorite: {enable: false},
       offline: {enable: false },
-      date: {enable: false},
+      date: {enable: true},
     },
   },
 

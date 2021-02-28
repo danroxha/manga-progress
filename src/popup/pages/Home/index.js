@@ -1,4 +1,4 @@
-import { DBFavorite } from '../../store/index.js'
+import { DBFavorite, DBConfiguration } from '../../store/index.js'
 import { 
   CardInfo, CardFavorite, Container, ContainerList,
   FilterTool, TrashIcon, HeaderHome,
@@ -36,6 +36,7 @@ export default {
           @MouseMove='enableCardInformation([$event, favorite])'
           @MouseOut='disableCardInformation'
           :favorite="favorite"
+          :enableDate='configuration?.date.enable'
           :key='favorite.hash'
         />
         <card-info />
@@ -47,6 +48,7 @@ export default {
     filteredList: [],
     raw: [],
     currentManga: {},
+    configuration: {},
   }),
   
   methods: {
@@ -183,7 +185,18 @@ export default {
     },
 
     async configData() {
+      
       let { favorites }  = await DBFavorite.loadBD()
+      let { switch: config } = await DBConfiguration.loadBD()
+
+      this.configuration = config
+
+      if(this.configuration.hidefavorite.enable) {
+        favorites = favorites.filter(favorite =>
+          favorite.status === 'active' && favorite.progress <= 100.0
+        )
+      }
+
       this.raw = favorites
       this.filteredList = this.raw
       

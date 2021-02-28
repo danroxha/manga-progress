@@ -250,6 +250,7 @@
       height: 100%;
       display: grid;
       grid-template-columns: auto 10%;
+      position: relative;
     }
 
     .card section header>span {
@@ -261,6 +262,16 @@
       color: var(--_1-color);
       font-weight: bold;
       transition: 250ms;
+    }
+    .card section header .last-update-manga {
+      margin: 2px 10px;
+      position: absolute;
+      background-color: var(--_2-color);
+    }
+    .card section header .last-update-manga:hover { 
+      cursor: inherit;
+      background-color: var(--_2-color);
+      color: var(--_1-color);
     }
 
     .card section header>span:hover {
